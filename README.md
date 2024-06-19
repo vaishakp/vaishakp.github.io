@@ -14,7 +14,8 @@ The basic philosophy behind improving the performance of a code can be broadly c
 2. Parallel programming. Using all available computing resources, cores, and accelerators.
 3. Use all hardware capabilities. In the context of CPUS, as CPUs evolve, they are equipped with increasing hardware instruction-level capabilities that can perform the same set of operations faster and more efficiently or in a lesser number of instruction cycles. 
 
-Why compile-time optimization?
+### Why compile-time optimization?
+
 Optimizations in 1 and 2 above are usually done in the development phase and require changes to the source code. While certain aspects of point three require changing the source code, there are certain other aspects of it that do not require changing the source code. From one perspective, this is simpler than the other two. Compile-time optimization is one such approach. Here, we aim to use the available capabilities of the compiler to make the most of the available hardware capabilities. 
 
 1. Modern c/c++ compilers are gaining increasing sophistication in emitting efficient and optimized code from sources tailored to the hardware. 
