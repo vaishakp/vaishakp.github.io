@@ -113,10 +113,10 @@ Some tests on SpEC fail at the file comparison stages if compared with output in
 
 ### ID solver
 
-![Wall time Ecc0](www.gitlab.com/vaishakp/spec-on-hpcs/images/WallTimeBench_Ecc0.png "Wall time")
-![CPU time Ecc0](www.gitlab.com/vaishakp/spec-on-hpcs/images/CPUTimeBenchAllEcc0.png "CPU time")
+![Wall time Ecc0](images/WallTimeBench_Ecc0.png)
+![CPU time Ecc0](images/CPUTimeBenchAllEcc0.png "CPU time")
 
 ### Evolution
 
 ### Scaling
-![Strong scaling](www.gitlab.com/vaishakp/spec-on-hpcs/images/tall_ll.png "Strong scaling")
+![Strong scaling](images/tall_ll.png "Strong scaling")
