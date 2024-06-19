@@ -1,6 +1,6 @@
 # Compile-time optimizations of SpEC on HPCs
 
-In this document, I describe the compile-time optimizations that led to significant performance improvements of Binary Black Hole simulations using SpEC. 
+In this document, I describe the compile-time optimizations that led to significant performance improvements in Binary Black Hole simulations using SpEC. 
 This document is relevant for HPCs with x86-64 CPUs, especially for AMD CPUs. It also implements many generic CPU optimizations.
 
 This is the result of an experimental exercise I carried out on the Sonic HPC at ICTS-TIFR, Bengaluru India. 
@@ -29,44 +29,46 @@ In general software applications, the priority of the developers is towards adap
 
 
 ## General approach
-1. Find out the hardware capabilities of the CPU and what major modern institutions are supported and turn them on at compile time. In most cases, most performance gains result from the use of all the native instructions, especially the AVX instruction sets. I recommend using avx2 over avx512. Although avx512 does result in performance gains over avx2, this is not always the case in my experience. One of the reasons is that avx512 is power-hungry and results in more thermal throttling. Furthermore, it is more common to find and group e.g. 8 double data types to perform a 256-bit vector operation than a 512-bit one.
-2. Use of FMA leads to performance gains. However, it is to be noted that if math is not written safely, this can lead to large errors. E.g. see the following.
-4. The use of static linking often leads to better performance. When profiling, it is advantageous to use dynamic libraries with PIC/PIE.
-5. Using the latest version of libraries e.g. SpEC ID solver uses PETSc internally. The use of recent versions showed performance benefits.
-6. Consistent compiling. Once the optimization flags are chosen, ensure the compilation of all the third-party libraries and the main application (SpEC here) with the same flags.
-7. Compilers. Common choices are clang (llvm, amd), Intel (icc), gcc.
+1. **Find CPU capabilities**. Find out the hardware capabilities of the CPU and what major modern institutions are supported and turn them on at compile time. In most cases, most performance gains result from the use of all the native instructions, especially the AVX instruction sets. I recommend using avx2 over avx512. Although avx512 does result in performance gains over avx2, this is not always the case in my experience. One of the reasons is that avx512 is power-hungry and results in more thermal throttling. Furthermore, it is more common to find and group e.g. 8 double data types to perform a 256-bit vector operation than a 512-bit one.
+2. **FMA**. The use of FMA leads to performance gains. However, it is to be noted that if math is not written safely, this can lead to large errors. E.g. see the following.
+4. **Linking**. The use of static linking often leads to better performance. When profiling, it is advantageous to use dynamic libraries with PIC/PIE.
+5. **Lib versions**. Using the latest version of libraries e.g. SpEC ID solver uses PETSc internally. The use of recent versions showed performance benefits.
+6. **Consistent compiling**. Once the optimization flags are chosen,
+ 1. ensure the compilation of all the third-party libraries and the main application (SpEC here) with the same flags.
+ 2. compile all dependencies, third-party software, and the main application with the same compiler.
+7. **Compilers**. Common choices are clang (llvm, amd), Intel (icc), gcc.
    1. On AMD machines, use AMD's new clang compiler, available in the AOCC compiler suite. This is supposed to lead to code that is adapted to AMD CPUs. However, AMD's clang could not be used to successfully compile SpEC will all optimizations turned on, due to possible bugs. I will talk about this later.
    2. On Intel machines, it is the Intel Parallel Studio or icc for the c/c++ compiler.
    3. The performance of GCC is very much comparable to that of Clang on AMD CPUs.
-8. Once a compiler is chosen, compile all dependencies, third-party software, and the main application with the same compiler.
-9. For all production code, use O3, and for debugging use Og.
-10. Although Ofast leads to faster performance, it turns on many unsafe math operations and discards FP checks leading to loss in accuracy at the least. It is highly discouraged to turn this option on.
-11. BLAS. 
+9. **Optimization flags**. For all production code, use O3, and for debugging use Og.
+10. **Avoid Ofast**. Although Ofast leads to faster performance, it turns on many unsafe math operations and discards FP checks leading to a loss in accuracy at the least. It is highly discouraged to turn this option on.
+11. **Linear Algebra libraries**. 
     1. On AMD CPUs, openBLAS gives the best performance.
     2. On intel, it is the MKL
     3. A newer version of LAPACK has comparable performance to openBLAS on AMD systems.
     4. Intel MKL often performs better than LAPACK on AMD systems, provided a fix is implemented. More on this later.
-12. OpenMP is favorable from a performance perspective. Although I am not confident of thread safety and race conditions with SpEC.
-13. MPI.
+12. **OpenMP** is favorable from a performance perspective. Although I am not confident of thread safety and race conditions with SpEC.
+13. **MPI**
     1. openMPI is favorable on AMD systems.
     2. intel MPI on Intel systems.
-14. AMD has recently come up with a suite of Linear algebra, math, and low-level mem implementations (AOCL). This will definitely result in better performance, cache usage, and memory operations. However, the initial versions (4.0) were buggy and could not be successfully tested with SpEC (e.g. newer versions of hdf5 would not compile with AOCL and AOCC). Something for the future.
-15. Other more time-consuming, manual, and advanced optimizations that require profiling and are iterative. These are not recommended for most people. This includes profile-guided optimizations and operations like tuning the depth of loop unrolling.
-16. Running SpEC over NAS storage or any network-connected storage is not recommended. Apart from latency issues, on Sonic, I found that SpEC hangs every time a packet is dropped, and the MPI processes are exposed to race conditions, even if TCP is used.
+14. **AMD AOCC/AOCL**. AMD has recently come up with a suite of Linear algebra, math, and low-level mem implementations (AOCL). This will definitely result in better performance, cache usage, and memory operations. However, the initial versions (4.0) were buggy and could not be successfully tested with SpEC (e.g. newer versions of hdf5 would not compile with AOCL and AOCC). Something for the future.
+15. **Other optimizations**.  more time-consuming, manual, and advanced optimizations that require profiling and are iterative. These are not recommended for most people. This includes profile-guided optimizations and operations like tuning the depth of loop unrolling.
+16. **Avoid Network storage devices**. Running SpEC over NAS storage or any network-connected storage is not recommended. Apart from latency issues, on Sonic, I found that SpEC hangs every time a packet is dropped, and the MPI processes are exposed to race conditions, even if TCP is used.
 17. For benchmarking certain third-party linear algebra libraries with various combinations of compilers, please refer to www.gitlab.com/vaishakp/benchmarks.git
-18. glibc. glibc is one of the most important libraries that determines the performance. Usually, the Linux kernel is inseparable from glib versioning. This means that one cannot upgrade glibc safely and consistently without recompiling the kernel. I highly recommend using glibc > 2.34, especially on AMD systems.
+18. **glibc**. glibc is one of the most important libraries that determines the performance. Usually, the Linux kernel is inseparable from glib versioning. This means that one cannot upgrade glibc safely and consistently without recompiling the kernel. I highly recommend using glibc > 2.34, especially on AMD systems.
     1. On older versions, glibc was not correctly parsing the available cache on most AMD and some intel systems. This was a huge disadvantage to the newer AMD processors:
     2. On older versions, a certain part of the code in glibc was forcing slower code paths on AMD systems.
     3. The implementation of various math libraries has been improved in newer glibc versions with e.g. vector intrinsic support.
     If the HPC OS is using older glibc versions, I recommend upgrading the OS.
-19. Details on additional experiments with SpEC can be found at https://gitlab.com/vaishakp/spec-on-hpcs
+19. **Other experiments**. Details on additional experiments with SpEC can be found at https://gitlab.com/vaishakp/spec-on-hpcs
     
 ## Compiling SpEC
 ### Versions of third-party libraries used (as of March 2023)
+The following is a list of libraries that have been successfully compiled and used with SpEC with the best (yet) performance. This is informed by profiling.
 
+1. gcc 11.1.0
 1. texinfo 7.0.2
 2. make 4.4
-3. gcc 11.1.0
 4. hwloc 2.9.0
 5. cmake 3.25.2
 6. knem 1.1.4
@@ -84,6 +86,7 @@ In general software applications, the priority of the developers is towards adap
 
 
 #### Other
+Not used in the below benchmarks, work in progress.
 1. aocc-compilers 4.0.0
 2. aocl 4.0.0
    1. amd-blis
