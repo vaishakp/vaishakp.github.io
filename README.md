@@ -16,17 +16,16 @@ The basic philosophy behind improving the performance of a code can be broadly c
 
 ### Why compile-time optimization?
 
-Optimizations in 1 and 2 above are usually done in the development phase and require changes to the source code. While certain aspects of point three require changing the source code, there are certain other aspects of it that do not require changing the source code. From one perspective, this is simpler than the other two. Compile-time optimization is one such approach. Here, we aim to use the available capabilities of the compiler to make the most of the available hardware capabilities. 
+Optimizations in 1 and 2 above are usually done in the development phase and require changes to the source code. While certain aspects of point three require changing the source code, there are certain other aspects of it that do not require changing the source code. From one perspective, this is simpler than the other two. Compile-time optimization is one such approach. This article is only concerned with the third point above. The aim is to use the available capabilities of the compiler to make the most of the available hardware capabilities of the HPC. 
 
 1. Modern c/c++ compilers are gaining increasing sophistication in emitting efficient and optimized code from sources tailored to the hardware. 
-2. Many high-performance scientific numerical codes like SpEC depend on an array of third-party libraries that implement various mathematical operations and numerical algorithms that are widely and frequently called e.g. BLAS, GSL, etc.
+2. Many high-performance scientific numerical codes like SpEC depend on an array of third-party libraries that implement various mathematical operations and numerical algorithms that are widely and frequently called e.g. BLAS, GSL, etc. Optimizing these for the native hardware leads to performance benefits.
 3. Modern processors support SIMD advanced vector extensions that can significantly improve the throughput.
 4. Modern processors, especially those from AMD (as of 2024) have large caches, leading to improved cache hit/miss ratios, resulting in immediate performance improvements.
 
+All this can be obtained without having to change the source code.
 
 In general software applications, the priority of the developers is towards adaptability and compatibility to a wide range of hardware capabilities and security. This brings severe limitations to the type of optimizations that can be carried out. However, for scientists/numerical relativists, performance (without loss of accuracy) is the priority. We often deal with a limited range of HPC hardware that does not change on a day-to-day basis. Thus it makes sense to invest time in carefully tailoring the software we use to the available hardware to make use of all its hardware capabilities, sacrificing portability. This document describes one such undertaking.
-
-
 
 ## General approach
 1. **Find CPU capabilities**. Find out the hardware capabilities of the CPU and what major modern institutions are supported and turn them on at compile time. In most cases, most performance gains result from the use of all the native instructions, especially the AVX instruction sets. I recommend using avx2 over avx512. Although avx512 does result in performance gains over avx2, this is not always the case in my experience. One of the reasons is that avx512 is power-hungry and results in more thermal throttling. Furthermore, it is more common to find and group e.g. 8 double data types to perform a 256-bit vector operation than a 512-bit one.
@@ -66,24 +65,23 @@ In general software applications, the priority of the developers is towards adap
 ### Versions of third-party libraries used (as of March 2023)
 The following is a list of libraries that have been successfully compiled and used with SpEC with the best (yet) performance. This is informed by profiling.
 
-1. gcc 11.1.0
-1. texinfo 7.0.2
-2. make 4.4
-4. hwloc 2.9.0
-5. cmake 3.25.2
-6. knem 1.1.4
-7. xpmem 2.6.5
-8. openmpi 4.1.4
-9. netlib-lapack
-10. fftw 3.3.10
-11. gsl 2.7.1
-12. hwloc 2.9.0
-13. hdf5 1.14.0
-14. papi 7.0.0
-15. petsc 3.18.4 
-16. amd libraries
-17. lapack 3.11.0
+1. [GCC](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/gcc.sh) 11.1.0
+1. [texinfo](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/texinfo.sh) 7.0.2
+2. [make](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/make.sh) 4.4
+4. [hwloc](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/hwloc.sh) 2.9.0
+5. [cmake](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/cmake.sh) 3.25.2
+6. [knem](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/knem.sh) 1.1.4
+7. [xpmem](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/xpmem.sh) 2.6.5
+8. [openmpi](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/openmpi.sh) 4.1.4
+10. [fftw](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/fftw.sh) 3.3.10
+11. [gsl](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/gsl.sh) 2.7.1
+12. [hwloc](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/hwloc.sh) 2.9.0
+13. [hdf5](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/hdf5_git.sh) 1.14.0
+14. [papi](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/papi.sh) 7.0.0
+15. [petsc](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/petsc.sh) 3.18.4 
+17. [lapack](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/lapack.sh) 3.11.0
 
+A master script to install these can be found [here](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/StartCompile.sh).
 
 #### Other
 Not used in the below benchmarks, work in progress.
@@ -126,7 +124,7 @@ To be added
 # Conclusions
 1. Investing time in carefully optimizing HPC software at compile time can result in noticeable performance improvements and speedups.
 2. For SpEC on gcc compiled software, the ID solver can have upto 90% speedup.
-3. The evolution has a speedup of about 40%
+3. The evolution has a speedup of about 40%. Upgrading glibc to version >= 2.34 contributes to almost half of this.
 4. Compiling libraries manually seems to have better performance compared to using spack. The reasons for this may be because
    1. Unless overridden, spack downloads precompiled binaries that suit the native arch. In this process, certain optimizations may not be implemented.
    2. The behavior of spack compilation flags in the default scenario. Does it use it consistently?
