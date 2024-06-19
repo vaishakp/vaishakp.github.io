@@ -64,28 +64,28 @@ In general software applications, the priority of the developers is towards adap
 ## Compiling SpEC
 ### Versions of third-party libraries used (as of March 2023)
 
-texinfo 7.0.2
-make 4.4
-gcc 11.1.0
-hwloc 2.9.0
-cmake 3.25.2
-knem 1.1.4
-xpmem 2.6.5
-openmpi 4.1.4
-netlib-lapack
-fftw 3.3.10
-gsl 2.7.1
-hwloc 2.9.0
-hdf5 1.14.0
-papi 7.0.0
-petsc 3.18.4 
-amd libraries
-lapack 3.11.0
+1. texinfo 7.0.2
+2. make 4.4
+3. gcc 11.1.0
+4. hwloc 2.9.0
+5. cmake 3.25.2
+6. knem 1.1.4
+7. xpmem 2.6.5
+8. openmpi 4.1.4
+9. netlib-lapack
+10. fftw 3.3.10
+11. gsl 2.7.1
+12. hwloc 2.9.0
+13. hdf5 1.14.0
+14. papi 7.0.0
+15. petsc 3.18.4 
+16. amd libraries
+17. lapack 3.11.0
 
 
 #### Other
-aocc-compilers 4.0.0
-aocl 4.0.0
+A. aocc-compilers 4.0.0
+B. aocl 4.0.0
    amd-blis
    amd-libflame
    amd-fftw
