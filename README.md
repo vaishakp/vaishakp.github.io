@@ -84,13 +84,13 @@ In general software applications, the priority of the developers is towards adap
 
 
 #### Other
-A. aocc-compilers 4.0.0
-B. aocl 4.0.0
-   amd-blis
-   amd-libflame
-   amd-fftw
-   amd-libm
-   amd-libmem
+1. aocc-compilers 4.0.0
+2. aocl 4.0.0
+   1. amd-blis
+   2. amd-libflame
+   3. amd-fftw
+   4. amd-libm
+   5. amd-libmem
 
 
 ### Compiler flags
