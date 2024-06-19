@@ -107,9 +107,16 @@ Some tests on SpEC fail at the file comparison stages if compared with output in
 
 ## Results
 
+1. Here, "0" is the optimized version of SpEC with custom-compiled libraries using gcc-11.1.0. "1" is spack-compiled SpEC (with spack-compiled external libraries) using gcc-9.4.
+1. The system is a simple equal mass, nonspinning BBH. Parameters can be obtained from here ().
+
+
 ### ID solver
 
+![Wall time Ecc0](www.gitlab.com/vaishakp/spec-on-hpcs/images/WallTimeBench_Ecc0.png "Wall time")
+![CPU time Ecc0](www.gitlab.com/vaishakp/spec-on-hpcs/images/CPUTimeBenchAllEcc0.png "CPU time")
 
 ### Evolution
 
-
+### Scaling
+![Strong scaling](www.gitlab.com/vaishakp/spec-on-hpcs/images/tall_ll.png "Strong scaling")
