@@ -53,10 +53,30 @@ In general software applications, the priority of the developers is towards adap
 15. Other more time-consuming, manual, and advanced optimizations that require profiling and are iterative. These are not recommended for most people. This includes profile-guided optimizations and operations like tuning the depth of loop unrolling.
 16. Running SpEC over NAS storage or any network-connected storage is not recommended. Apart from latency issues, on Sonic, I found that SpEC hangs every time a packet is dropped, and the MPI processes are exposed to race conditions, even if TCP is used.
 17. For benchmarking certain third-party linear algebra libraries with various combinations of compilers, please refer to www.gitlab.com/vaishakp/benchmarks.git
-
+18. glibc. glibc is one of the most important libraries that determines the performance. Usually, the Linux kernel is inseparable from glib versioning. This means that one cannot upgrade glibc safely and consistently without recompiling the kernel. I highly recommend using glibc > 2.34, especially on AMD systems.
+    1. On older versions, glibc was not correctly parsing the available cache on most AMD and some intel systems. This was a huge disadvantage to the newer AMD processors:
+    2. On older versions, a certain part of the code in glibc was forcing slower code paths on AMD systems.
+    3. The implementation of various math libraries has been improved in newer glibc versions with e.g. vector intrinsic support.
+    If the HPC OS is using older glibc versions, I recommend upgrading the OS.
+19. Details on additional experiments with SpEC can be found at https://gitlab.com/vaishakp/spec-on-hpcs
+    
 ## Compiling SpEC
 ### Versions of third-party libraries used (as of March 2023)
 
 ### Compiler flags
 The following flags were used to compile ALL the software/libraries:
 -mavx2, -mfma, -fPIC, -O3, -march=native
+
+### Issues with FMA
+FMA itself is IEEE compliant and leads to performance and accuracy gains. However, some isolated math expressions (which can be classified as unsafe) lead to anomalous loss of accuracy. E.g. consider
+
+Some tests on SpEC fail at the file comparison stages if compared with output in existing  Save directories. It is recommended to re-generate tests in these cases.
+
+## Results
+
+### ID solver
+
+
+### Evolution
+
+
