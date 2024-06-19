@@ -47,7 +47,7 @@ In general software applications, the priority of the developers is towards adap
     2. On intel, it is the MKL
     3. A newer version of LAPACK has comparable performance to openBLAS on AMD systems.
     4. Intel MKL often performs better than LAPACK on AMD systems, provided a fix is implemented. More on this later.
-12. **OpenMP** is favorable from a performance perspective. Although I am not confident of thread safety and race conditions with SpEC.
+12. **OpenMP** is favorable from a performance perspective. However, I am not confident of thread safety and race conditions with SpEC.
 13. **MPI**
     1. openMPI is favorable on AMD systems.
     2. intel MPI on Intel systems.
@@ -55,7 +55,7 @@ In general software applications, the priority of the developers is towards adap
 15. **Other optimizations**.  more time-consuming, manual, and advanced optimizations that require profiling and are iterative. These are not recommended for most people. This includes profile-guided optimizations and operations like tuning the depth of loop unrolling.
 16. **Avoid Network storage devices**. Running SpEC over NAS storage or any network-connected storage is not recommended. Apart from latency issues, on Sonic, I found that SpEC hangs every time a packet is dropped, and the MPI processes are exposed to race conditions, even if TCP is used.
 17. For benchmarking certain third-party linear algebra libraries with various combinations of compilers, please refer to www.gitlab.com/vaishakp/benchmarks.git
-18. **glibc**. glibc is one of the most important libraries that determines the performance. Usually, the Linux kernel is inseparable from glib versioning. This means that one cannot upgrade glibc safely and consistently without recompiling the kernel. I highly recommend using glibc > 2.34, especially on AMD systems.
+18. **glibc**. glibc is one of the most important libraries that determines performance. Usually, the Linux kernel is inseparable from glib versioning. This means that one cannot upgrade glibc safely and consistently without recompiling the kernel. I highly recommend using glibc > 2.34, especially on AMD systems.
     1. On older versions, glibc was not correctly parsing the available cache on most AMD and some intel systems. This was a huge disadvantage to the newer AMD processors:
     2. On older versions, a certain part of the code in glibc was forcing slower code paths on AMD systems.
     3. The implementation of various math libraries has been improved in newer glibc versions with e.g. vector intrinsic support.
@@ -117,6 +117,19 @@ Some tests on SpEC fail at the file comparison stages if compared with output in
 ![CPU time Ecc0](images/CPUTimeBenchAllEcc0.png "CPU time")
 
 ### Evolution
+To be added
+
 
 ### Scaling
 ![Strong scaling](images/tall_ll.png "Strong scaling")
+
+# Conclusions
+1. Investing time in carefully optimizing HPC software at compile time can result in noticeable performance improvements and speedups.
+2. For SpEC on gcc compiled software, the ID solver can have upto 90% speedup.
+3. The evolution has a speedup of about 40%
+4. Compiling libraries manually seems to have better performance compared to using spack. The reasons for this may be because
+   1. Unless overridden, spack downloads precompiled binaries that suit the native arch. In this process, certain optimizations may not be implemented.
+   2. The behavior of spack compilation flags in the default scenario. Does it use it consistently?
+   3. gcc-11.1.0 may have better compiler optimization capabilities over gcc 9.4 used here for spack compiled SpEC's benchmark. Also for other third-party libraries.
+5. Modern vector extensions like avx and glibc versions can have a significant impact on the performance of the application.
+6. Overall, optimization can result in at least 15% more runs which would e.g. directly benefit surrogate and modeling.
