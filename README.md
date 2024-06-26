@@ -163,7 +163,7 @@ The following can be observed when the above code is run (with e.g. `gcc-13.3`):
 ![image](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/dbb09c06-502c-4a47-b1be-52f3737c496e)
 
 Notes:
-1. It can be seen that when fma is turned on (LHS), native SIMD instructions (`vfmsub132ss`, `vfmadd132ss`, etc.) are used  to carry out FMA.
+1. It can be seen that when `fma` is turned on (LHS), native SIMD instructions (`vfmsub132ss`, `vfmadd132ss`, etc.) are used  to carry out FMA.
 2. On the RHS, `fma` was turned off with `-ffp-contract=off`. Here, only scalar operations are used (`vmulss`, `vsubss`, etc.).
 3. The avx2 xmm registers are being used in both cases.
 4. The code with FMA on (i.e. LHS) completes the execution with fewer instructions because of FMA.
