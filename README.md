@@ -32,7 +32,8 @@ In general software applications, the priority of the developers is towards adap
 2. **FMA**. The use of FMA leads to performance gains. However, it is to be noted that if math is not written safely, this can lead to large errors. E.g. take a look at the following.
 4. **Linking**. The use of static linking often leads to better performance. When profiling, it is advantageous to use dynamic libraries with PIC/PIE.
 5. **Lib versions**. Using the latest version of libraries e.g. SpEC ID solver uses PETSc internally. The use of recent versions showed performance benefits.
-6. **Consistent compiling**. Once the optimization flags are chosen,
+6. **Source**. Always consider compiling from source instead of using pre-compiled binaries.
+7. **Consistent compiling**. Once the optimization flags are chosen,
  1. ensure the compilation of all the third-party libraries and the main application (SpEC here) with the same flags.
  2. compile all dependencies, third-party software, and the main application with the same compiler.
 7. **Compilers**. Common choices are clang (llvm, amd), Intel (icc), gcc.
@@ -64,13 +65,15 @@ In general software applications, the priority of the developers is towards adap
 ## Compiling SpEC
 ### Versions of third-party libraries used (as of March 2023)
 
-We recommend setting up third-party libraries in a separate location, preferably on SSDs. We will use [environment modules](https://modules.readthedocs.io/en/latest/INSTALL.html) to manage the loading and unloading of libraries.
+We recommend setting up third-party libraries in a separate location, preferably on SSDs. Although SpEC execution speed is not expected to be affected by the storage disk type (as everything is loaded into RAM before executing) as SpEC is not I/O intensive, using faster disks greatly reduces the compile time. 
+
+We will use [environment modules](https://modules.readthedocs.io/en/latest/INSTALL.html) to manage the loading and unloading of libraries.
 
 
 The following is a list of libraries that have been successfully compiled and used with SpEC with the best (yet) performance. This is informed by profiling.
 
 1. [Environment modules](https://modules.readthedocs.io/en/latest/INSTALL.html). Setup manually.
-2. [perl]() 5.16.3, 5.31.1. Have noted compatibility issues on newer versions of Perl with SpEC.
+2. [perl](https://www.perl.org/get.html) 5.16.3, 5.31.1. Have noted compatibility issues on newer versions of Perl with SpEC.
 1. [GCC](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/gcc.sh) 11.1.0
 1. [texinfo](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/texinfo.sh) 7.0.2
 2. [make](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/make.sh) 4.4
@@ -127,6 +130,7 @@ Some tests on SpEC fail at the file comparison stages if compared with output in
 ### Tests
 
 ## Results
+SpEC was compiled and installed on sonic with dynamic linking. The storage in use was a BeeGFS non-SSD spinning disk.
 
 1. Here, "0" is the optimized version of SpEC with custom-compiled libraries using gcc-11.1.0. "1" is spack-compiled SpEC (with spack-compiled external libraries) using gcc-9.4.
 1. The system is a simple equal mass, nonspinning BBH. Parameters can be obtained from here ().
