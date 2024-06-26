@@ -29,14 +29,14 @@ In general software applications, the priority of the developers is towards adap
 
 ## General approach
 1. **Find CPU capabilities**. Find out the hardware capabilities of the CPU and what major modern institutions are supported and turn them on at compile time. In most cases, most performance gains result from the use of all the native instructions, especially the AVX instruction sets. I recommend using avx2 over avx512. Although avx512 does result in performance gains over avx2, this is not always the case in my experience. One of the reasons is that avx512 is power-hungry and results in more thermal throttling. Furthermore, it is more common to find and group e.g. 8 double data types to perform a 256-bit vector operation than a 512-bit one.
-2. **FMA**. The use of FMA leads to performance gains. However, it is to be noted that if math is not written safely, this can lead to large errors. E.g. see the following.
+2. **FMA**. The use of FMA leads to performance gains. However, it is to be noted that if math is not written safely, this can lead to large errors. E.g. take a look at the following.
 4. **Linking**. The use of static linking often leads to better performance. When profiling, it is advantageous to use dynamic libraries with PIC/PIE.
 5. **Lib versions**. Using the latest version of libraries e.g. SpEC ID solver uses PETSc internally. The use of recent versions showed performance benefits.
 6. **Consistent compiling**. Once the optimization flags are chosen,
  1. ensure the compilation of all the third-party libraries and the main application (SpEC here) with the same flags.
  2. compile all dependencies, third-party software, and the main application with the same compiler.
 7. **Compilers**. Common choices are clang (llvm, amd), Intel (icc), gcc.
-   1. On AMD machines, use AMD's new clang compiler, available in the AOCC compiler suite. This is supposed to lead to code that is adapted to AMD CPUs. However, AMD's clang could not be used to successfully compile SpEC will all optimizations turned on, due to possible bugs. I will talk about this later.
+   1. On AMD machines, use AMD's new clang compiler, available in the AOCC compiler suite. This is supposed to lead to code that is adapted to AMD CPUs. However, AMD's clang could not be used to compile SpEC successfully will all optimizations turned on, due to possible bugs. I will talk about this later.
    2. On Intel machines, it is the Intel Parallel Studio or icc for the c/c++ compiler.
    3. The performance of GCC is very much comparable to that of Clang on AMD CPUs.
 9. **Optimization flags**. For all production code, use O3, and for debugging use Og.
@@ -63,8 +63,14 @@ In general software applications, the priority of the developers is towards adap
     
 ## Compiling SpEC
 ### Versions of third-party libraries used (as of March 2023)
+
+We recommend setting up third-party libraries in a separate location, preferably on SSDs. We will use [environment modules](https://modules.readthedocs.io/en/latest/INSTALL.html) to manage the loading and unloading of libraries.
+
+
 The following is a list of libraries that have been successfully compiled and used with SpEC with the best (yet) performance. This is informed by profiling.
 
+1. [Environment modules](https://modules.readthedocs.io/en/latest/INSTALL.html). Setup manually.
+2. [perl]() 5.16.3, 5.31.1. Have noted compatibility issues on newer versions of Perl with SpEC.
 1. [GCC](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/gcc.sh) 11.1.0
 1. [texinfo](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/texinfo.sh) 7.0.2
 2. [make](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/make.sh) 4.4
@@ -81,7 +87,12 @@ The following is a list of libraries that have been successfully compiled and us
 15. [petsc](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/petsc.sh) 3.18.4 
 17. [lapack](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/packages/lapack.sh) 3.11.0
 
-A master script to install these can be found [here](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/StartCompile.sh).
+Note:
+1. A master script to install these can be found [here](https://gitlab.com/vaishakp/pkginstaller/-/blob/983aa9a74ddaf9a23c1546e10372e2637e08bb84/StartCompile.sh).
+1. Comment/ uncomment the corresponding lines to install specific software only.
+2. Please preserve the ordering of the software install.
+3. Please use the default flags "-O3 -march=native -fPIC" for all dependent software not listed above.
+
 
 #### Other
 Not used in the below benchmarks, work in progress.
