@@ -116,7 +116,45 @@ The following flags were used to compile ALL the software/libraries:
 
 ### Issues with FMA
 `FMA` itself is [IEEE 754](https://ieeexplore.ieee.org/document/8766229) compliant and leads to performance and accuracy gains. However, some isolated examples or math expressions exist, which should be trivially zero, that lead to anomalous loss of accuracy, typically at the level of 1e-7 for single and 1e-14 for double precision operations due to representation errors. E.g. consider
+```
+#include <iostream>
+#include <cmath>
+#include <cassert>
 
+// Prevent caching in registers to
+// avoid read/write conversion/representation
+// errors
+volatile float x = -0.4876543210191;
+volatile float alpha = 3.345345439887;
+
+//using namespace std;
+
+int main()
+{
+    float u1 = x * cosf(alpha);
+    float v1 = x * sinf(alpha);
+    float u2 = x * cosf(alpha);
+    float v2 = x * sinf(alpha);
+    float du = u1 - u2;
+    float dv = v1 - v2;
+    float rms = sqrtf(du * du + dv * dv);
+
+    //std::cout << "u1: " << u1 << "\t u2:" << u2 << std::endl; 
+    //std::cout << "v1: " << v1 << "\t v2:" << v2 << std::endl;
+    //std::cout << "du:"<< du << "\t dv:" << dv << std::endl;
+    std::cout << "rms: " << rms << std::endl;
+
+}
+```
+The following can be observed when the above code is run (with e.g. `gcc-13.3`):
+1. If `fma` is enabled, the above outputs `rms: 5.43286e-09` and not zero. Note that '-march=native' enables this on supported CPUs.
+2. By default, `gcc` sets `-ffp-contract=fast`, enabling `fma` if hardware supports it on all optimization levels greater than `O1`
+3. To turn off `fma` correctly, one needs to use `-ffp-contract=off`. `-mno-fma` does not suffice. In this case one gets `rms =0`
+4. If the std outlines are uncommented, `fma` is not used as intermediate values like `u1, u2, v1, v2, du, dv` are accessed. This holds true even if `fma` is turned on.
+5. Setting `-ffp-contract=on` turns on `fma` only if the chosen language standard supports it. E.g., for c++11 or 17, `fma` is not used across statements but only within an expression.
+6. If the language std is not specified, the default is `-ffp-contract=fast` i.e. contraction happens across statements.
+7. Use of other cos, sin (cast to double) overloads results in `rms: 0` with `fma` on.
+   
 Some tests on SpEC fail at the file comparison stages if compared with output in existing  Save directories. It is recommended to re-generate tests in these cases.
 
 
