@@ -3,7 +3,7 @@
 In this document, I describe the compile-time optimizations (experimented between Nov 2022 and March 2023) that led to significant performance improvements in Binary Black Hole simulations using SpEC. 
 This document is relevant for HPCs with x86-64 CPUs, especially for AMD CPUs. It also implements many generic CPU optimizations.
 
-This is the result of an experimental exercise I carried out on the Sonic HPC at ICTS-TIFR, Bengaluru India. 
+This is the result of an experimental exercise I carried out on the Sonic HPC at ICTS-TIFR, Bengaluru India. Although this document is concerned specifically with SpEC compile-time optimization, this document can serve as a blueprint for compile-time optimization of any software.
 
 
 ## Performance and optimization
@@ -114,6 +114,17 @@ The following flags were used to compile ALL the software/libraries:
 FMA itself is IEEE compliant and leads to performance and accuracy gains. However, some isolated math expressions (which can be classified as unsafe) lead to anomalous loss of accuracy. E.g. consider
 
 Some tests on SpEC fail at the file comparison stages if compared with output in existing  Save directories. It is recommended to re-generate tests in these cases.
+
+
+## Compiling SpEC
+
+### ~/.SpEC
+### configure
+### Support/Machines.pm
+### Machine definition
+### Machine environment
+### flags
+### Tests
 
 ## Results
 
