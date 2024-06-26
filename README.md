@@ -14,6 +14,8 @@ The basic philosophy behind improving the performance of a code can be broadly c
 2. Parallel programming. Using all available computing resources, cores, and accelerators.
 3. Use all hardware capabilities. In the context of CPUS, as CPUs evolve, they are equipped with increasing hardware instruction-level capabilities that can perform the same set of operations faster and more efficiently or in a lesser number of instruction cycles. 
 
+(Hopefully more on 1 and 2 in the future!)
+
 ### Why compile-time optimization?
 
 Optimizations in 1 and 2 above are usually done in the development phase and require changes to the source code. While certain aspects of point three require changing the source code, there are certain other aspects of it that do not require changing the source code. From one perspective, this is simpler than the other two. Compile-time optimization is one such approach. This article is only concerned with the third point above. The aim is to use the available capabilities of the compiler to make the most of the available hardware capabilities of the HPC. 
@@ -119,7 +121,6 @@ The following flags were used to compile ALL the software/libraries:
 ```
 #include <iostream>
 #include <cmath>
-#include <cassert>
 
 // Prevent caching in registers to
 // avoid read/write conversion/representation
@@ -152,7 +153,7 @@ int main()
 
 The following can be observed when the above code is run (with e.g. `gcc-13.3`):
 1. If `fma` is enabled, the above outputs `rms: 5.43286e-09` and not zero. Note that '-march=native' enables this on supported CPUs.
-2. By default, `gcc` sets `-ffp-contract=fast`, enabling `fma` if hardware supports it on all optimization levels greater than `O1`
+2. By default, `gcc` sets `-ffp-contract=fast`, enabling `fma` if the hardware supports it on all optimization levels greater than `O1`
 3. To turn off `fma` correctly, one needs to use `-ffp-contract=off`. `-mno-fma` does not suffice. In this case one gets `rms =0`
 4. If the std outlines are uncommented, `fma` is not used as intermediate values like `u1, u2, v1, v2, du, dv` are accessed. This holds true even if `fma` is turned on.
 5. Setting `-ffp-contract=on` turns on `fma` only if the chosen language standard supports it. E.g., for c++11 or 17, `fma` is not used across statements but only within an expression.
@@ -185,7 +186,7 @@ To be added
 Some tests on SpEC fail at the file comparison stages if compared with output in existing  Save directories. It is recommended to re-generate tests in these cases.
 
 ## Results
-SpEC was compiled and installed on `sonic` with dynamic linking. The storage in use was a BeeGFS non-SSD spinning disk.
+`SpEC` was compiled and installed on `sonic` with dynamic linking. The storage in use was a BeeGFS non-SSD spinning disk.
 
 1. Here, "0" is the optimized version of SpEC with custom-compiled libraries using `gcc-11.1.0`. "1" is spack-compiled SpEC (with `spack`-compiled external libraries) using `gcc-9.4`.
 1. The system is a simple equal mass, nonspinning BBH. Parameters can be obtained from here ().
@@ -207,7 +208,7 @@ To be added
 1. Compile-time optimizations are usually one of the final stages of performance optimization in software programming. This allows us to squeeze out the best performance given the software and the hardware without changing either.
 2. Investing time in carefully optimizing HPC software at compile time can result in noticeable performance improvements and speedups.
 3. For SpEC with `gcc` compiled software, the ID solver can have upto 90% speedup.
-4. Modern vector extensions like `avx` and glibc versions can severely impact the performance of the application.
+4. Modern vector extensions like `avx` and glibc versions can severely impact the performance of applications.
 5. The evolution has a speedup of about 40%. Upgrading `glibc` to version `>= 2.34` contributes to almost half of this.
 6. Compiling libraries manually seems to have better performance compared to using spack. The reasons for this may be because
    1. Unless overridden, spack downloads precompiled binaries that suit the native arch. In this process, certain optimizations may not be implemented.
