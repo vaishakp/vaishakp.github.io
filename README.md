@@ -1,6 +1,6 @@
 # Compile-time optimizations of SpEC on HPCs
 
-In this document, I describe the compile-time optimizations that led to significant performance improvements in Binary Black Hole simulations using SpEC. 
+In this document, I describe the compile-time optimizations (experimented between Nov 2022 and March 2023) that led to significant performance improvements in Binary Black Hole simulations using SpEC. 
 This document is relevant for HPCs with x86-64 CPUs, especially for AMD CPUs. It also implements many generic CPU optimizations.
 
 This is the result of an experimental exercise I carried out on the Sonic HPC at ICTS-TIFR, Bengaluru India. 
