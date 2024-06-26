@@ -92,6 +92,7 @@ Note:
 1. Comment/ uncomment the corresponding lines to install specific software only.
 2. Please preserve the ordering of the software install.
 3. Please use the default flags "-O3 -march=native -fPIC" for all dependent software not listed above.
+4. If you find any broken links/issues with the pkginstaller script above, please raise an issue [here](https://gitlab.com/vaishakp/pkginstaller/-/issues), even if you could fix it yourself. This will improve the script and help others.
 
 
 #### Other
