@@ -127,7 +127,7 @@ The following flags were used to compile ALL the software/libraries:
 volatile float x = -0.4876543210191;
 volatile float alpha = 3.345345439887;
 
-//using namespace std;
+using namespace std;
 
 int main()
 {
@@ -139,10 +139,10 @@ int main()
     float dv = v1 - v2;
     float rms = sqrtf(du * du + dv * dv);
 
-    //std::cout << "u1: " << u1 << "\t u2:" << u2 << std::endl; 
-    //std::cout << "v1: " << v1 << "\t v2:" << v2 << std::endl;
-    //std::cout << "du:"<< du << "\t dv:" << dv << std::endl;
-    std::cout << "rms: " << rms << std::endl;
+    //cout << "u1: " << u1 << "\t u2:" << u2 << "\n"; 
+    //cout << "v1: " << v1 << "\t v2:" << v2 << "\n";
+    //cout << "du:"<< du << "\t dv:" << dv << "\n";
+    cout << "rms: " << rms << "\n";
 
 }
 ```
@@ -153,7 +153,7 @@ The following can be observed when the above code is run (with e.g. `gcc-13.3`):
 4. If the std outlines are uncommented, `fma` is not used as intermediate values like `u1, u2, v1, v2, du, dv` are accessed. This holds true even if `fma` is turned on.
 5. Setting `-ffp-contract=on` turns on `fma` only if the chosen language standard supports it. E.g., for c++11 or 17, `fma` is not used across statements but only within an expression.
 6. If the language std is not specified, the default is `-ffp-contract=fast` i.e. contraction happens across statements.
-7. Use of other cos, sin (cast to double) overloads results in `rms: 0` with `fma` on.
+7. Use of other cos, sin  overloads (double) results in `rms: 0` with `fma` on.
    
 Some tests on SpEC fail at the file comparison stages if compared with output in existing  Save directories. It is recommended to re-generate tests in these cases.
 
