@@ -19,9 +19,9 @@ The basic philosophy behind improving the performance of a code can be broadly c
 Optimizations in 1 and 2 above are usually done in the development phase and require changes to the source code. While certain aspects of point three require changing the source code, there are certain other aspects of it that do not require changing the source code. From one perspective, this is simpler than the other two. Compile-time optimization is one such approach. This article is only concerned with the third point above. The aim is to use the available capabilities of the compiler to make the most of the available hardware capabilities of the HPC. 
 
 1. Modern c/c++ compilers are gaining increasing sophistication in emitting efficient and optimized code from sources tailored to the hardware. 
-2. Many high-performance scientific numerical codes like SpEC depend on an array of third-party libraries that implement various mathematical operations and numerical algorithms that are widely and frequently called e.g. BLAS, GSL, etc. Optimizing these for the native hardware leads to performance benefits.
+2. Many high-performance scientific numerical codes like SpEC depend on an array of third-party libraries that implement various mathematical operations and numerical algorithms that are widely and frequently called e.g. `BLAS`, `GSL`, etc. Optimizing these for the native hardware leads to performance benefits.
 3. Modern processors support SIMD advanced vector extensions that can significantly improve the throughput.
-4. Modern processors, especially those from AMD (as of 2024) have large caches, leading to improved cache hit/miss ratios, resulting in immediate performance improvements.
+4. Modern processors, especially those from AMD (as of 2024) have large caches, leading to improved cache hit/miss ratio, resulting in immediate performance improvements.
 
 All this can be obtained without having to change the source code.
 
@@ -31,13 +31,13 @@ In general software applications, the priority of the developers is towards adap
 1. **Find CPU capabilities**. Find out the hardware capabilities of the CPU and what major modern institutions are supported and turn them on at compile time. In most cases, most performance gains result from the use of all the native instructions, especially the `AVX` instruction sets. I recommend using `avx2` over `avx512`. Although `avx512` does result in performance gains over `avx2`, this is not always the case in my experience. One of the reasons is that `avx512` is power-hungry and results in more thermal throttling. Furthermore, it is more common to find and group e.g. 8 double data types to perform a 256-bit vector operation than a 512-bit one.
 2. **FMA**. The use of `FMA` leads to performance gains. However, it is to be noted that if math is not written safely, this can lead to large errors. E.g. take a look at the section [below]().
 4. **Linking**. The use of static linking often leads to better performance. When profiling, it is advantageous to use dynamic libraries with `PIC`/`PIE`.
-5. **Lib versions**. Using the latest version of libraries e.g. SpEC ID solver uses PETSc internally. The use of recent versions showed performance benefits.
+5. **Lib versions**. Using the latest version of libraries e.g. SpEC ID solver uses `PETSc` internally. The use of recent versions showed performance benefits.
 6. **Source**. Always consider compiling from source instead of using pre-compiled binaries.
 7. **Consistent compiling**. Once the optimization flags are chosen,
  1. ensure the compilation of all the third-party libraries and the main application (SpEC here) with the same flags.
  2. compile all dependencies, third-party software, and the main application with the same compiler.
 7. **Compilers**. Common choices are `clang` (`llvm`, `amd`), Intel (`icc`), `gcc`.
-   1. On AMD machines, use AMD's new clang compiler, available in the AOCC compiler suite. This is supposed to lead to code that is adapted to AMD CPUs. However, AMD's clang could not be used to compile SpEC successfully will all optimizations turned on, due to possible bugs. I will talk about this later.
+   1. On AMD machines, use AMD's new clang compiler, available in the `AOCC` compiler suite. This is supposed to lead to code that is adapted to AMD CPUs. However, AMD's `clang` could not be used to compile SpEC successfully will all optimizations turned on, due to possible bugs. I will talk about this later.
    2. On Intel machines, it is the Intel Parallel Studio or `icc` for the c/c++ compiler.
    3. The performance of `GCC` is very much comparable to that of Clang on AMD CPUs.
 9. **Optimization flags**. For all production code, use `O3`, and for debugging use `Og`.
@@ -47,7 +47,7 @@ In general software applications, the priority of the developers is towards adap
     2. On intel, it is the `MKL`.
     3. A newer version of `LAPACK` has comparable performance to `openBLAS` on AMD systems.
     4. Intel `MKL` often performs better than `LAPACK` on AMD systems, provided a fix is implemented. Please contact me directly for more information.
-12. **OpenMP** is favorable from a performance perspective. However, I am not confident of thread safety and race conditions with SpEC.
+12. **OpenMP** is favorable from a performance perspective. However, I am not confident of thread safety and race conditions with `SpEC`.
 13. **MPI**
     1. `openMPI` is favorable on AMD systems.
     2. intel `MPI` on Intel systems.
@@ -55,7 +55,7 @@ In general software applications, the priority of the developers is towards adap
 15. **Other optimizations**.  more time-consuming, manual, and advanced optimizations that require profiling and are iterative. These are not recommended for most people. This includes profile-guided optimizations and operations like tuning the depth of loop unrolling.
 16. **Avoid Network storage devices**. Running `SpEC` over NAS storage or any network-connected storage is not recommended. Apart from latency issues, on Sonic, I found that SpEC hangs every time a packet is dropped, and the MPI processes are exposed to race conditions, even if TCP is used.
 17. For benchmarking certain third-party linear algebra libraries with various combinations of compilers, please refer to www.gitlab.com/vaishakp/benchmarks.git
-18. **glibc**. `glibc` is one of the most important libraries that determines performance. Usually, the Linux kernel is inseparable from glib versioning. This means that one cannot upgrade glibc safely and consistently without recompiling the kernel. I highly recommend using `glibc > 2.34`, especially on AMD systems.
+18. **glibc**. `glibc` is one of the most important libraries that determines performance. Usually, the Linux kernel is inseparable from glib versioning. This means that one cannot upgrade `glibc` safely and consistently without recompiling the kernel. I highly recommend using `glibc > 2.34`, especially on AMD systems.
     1. On older versions, `glibc` was not correctly parsing the available cache on most AMD and some intel systems. This was a huge disadvantage to the newer AMD processors:
     2. On older versions, a certain part of the code in `glibc` contributed by a certain corporation was forcing slower code paths on AMD systems.
     3. The implementation of various math libraries has been improved in newer `glibc` versions with e.g. vector intrinsic support.
