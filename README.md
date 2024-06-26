@@ -146,6 +146,10 @@ int main()
 
 }
 ```
+
+
+
+
 The following can be observed when the above code is run (with e.g. `gcc-13.3`):
 1. If `fma` is enabled, the above outputs `rms: 5.43286e-09` and not zero. Note that '-march=native' enables this on supported CPUs.
 2. By default, `gcc` sets `-ffp-contract=fast`, enabling `fma` if hardware supports it on all optimization levels greater than `O1`
@@ -154,8 +158,18 @@ The following can be observed when the above code is run (with e.g. `gcc-13.3`):
 5. Setting `-ffp-contract=on` turns on `fma` only if the chosen language standard supports it. E.g., for c++11 or 17, `fma` is not used across statements but only within an expression.
 6. If the language std is not specified, the default is `-ffp-contract=fast` i.e. contraction happens across statements.
 7. Use of other cos, sin  overloads (double) results in `rms: 0` with `fma` on.
-   
-Some tests on SpEC fail at the file comparison stages if compared with output in existing  Save directories. It is recommended to re-generate tests in these cases.
+
+#### Difference in assembly code
+![image](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/dbb09c06-502c-4a47-b1be-52f3737c496e)
+
+Notes:
+1. It can be seen that when fma is turned on (LHS), native SIMD instructions (`vfmsub132ss`, `vfmadd132ss`, etc.) are used  to carry out FMA.
+2. On the RHS, `fma` was turned off with `-ffp-contract=off`. Here, only scalar operations are used (`vmulss`, `vsubss`, etc.).
+3. The avx2 xmm registers are being used in both cases.
+4. The code with FMA on (i.e. LHS) completes the execution with fewer instructions because of FMA.
+
+
+
 
 
 ## Compiling SpEC
@@ -167,6 +181,7 @@ To be added
 ### Machine environment
 ### flags
 ### Tests
+Some tests on SpEC fail at the file comparison stages if compared with output in existing  Save directories. It is recommended to re-generate tests in these cases.
 
 ## Results
 SpEC was compiled and installed on `sonic` with dynamic linking. The storage in use was a BeeGFS non-SSD spinning disk.
