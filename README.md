@@ -201,6 +201,26 @@ Some tests on SpEC fail at the file comparison stages if compared with output in
 To be added
 
 
+#### Profiling
+
+A typical SpEC evolution process has the following stats (after optimization):
+```
+89,480.31 msec task-clock:u                     #    1.000 CPUs utilized             
+                 0      context-switches:u               #    0.000 /sec                      
+                 0      cpu-migrations:u                 #    0.000 /sec                      
+            12,520      page-faults:u                    #  139.919 /sec                      
+   273,962,868,189      cycles:u                         #    3.062 GHz                         (83.33%)
+    14,372,623,730      stalled-cycles-frontend:u        #    5.25% frontend cycles idle        (83.33%)
+   131,593,137,365      stalled-cycles-backend:u         #   48.03% backend cycles idle         (83.33%)
+   559,504,990,729      instructions:u                   #    2.04  insn per cycle            
+                                                  #    0.24  stalled cycles per insn     (83.33%)
+    76,270,339,450      branches:u                       #  852.370 M/sec                       (83.34%)
+       249,317,573      branch-misses:u                  #    0.33% of all branches             (83.33%)
+
+      89.482851720 seconds time elapsed
+```
+
+
 ### Scaling
 ![Strong scaling](images/tall_ll.png "Strong scaling")
 
