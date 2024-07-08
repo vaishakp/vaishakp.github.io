@@ -222,7 +222,7 @@ A typical SpEC evolution process has the following stats (after optimization):
 
       89.482851720 seconds time elapsed
 ```
-1. 48% of backend cycles are stalled. This means the CPU is wasting cycles waiting for data to arrive from the memory.
+1. 48% of backend cycles are stalled. This means the CPU is wasting cycles waiting for data to arrive from the memory. SpEC can benefit from backend bound tuning (see e.g. intel's [backend tuning](https://www.amd.com/en/developer/uprof/uprof-eula.html?filename=AMDuProf_Linux_x64_4.2.850.tar.bz2) )
 2. A cache hit ratio upwards of 95% is considered good. Here we have about 10%.
 3. Branch misses are not high. Large branch misses can lead to a wastage of CPU cycles.
 4. Page faults of 140/sec are high, and can significantly affect the performance. This is concerning because ample RAM was available (usage was only 0.1% for each of the 48 processors) and unused in the system. The page size was 4096kB
