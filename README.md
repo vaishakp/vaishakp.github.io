@@ -217,9 +217,17 @@ A typical SpEC evolution process has the following stats (after optimization):
     76,270,339,450      branches:u                       #  852.370 M/sec                       (83.34%)
        249,317,573      branch-misses:u                  #    0.33% of all branches             (83.33%)
 
+    20,576,372,790      cache-references:u                                                    
+     1,989,993,791      cache-misses:u                   #    9.671 % of all cache refs
+
       89.482851720 seconds time elapsed
 ```
-
+1. 48% of backend cycles are stalled. This means the CPU is wasting cycles waiting for data to arrive from the memory.
+2. A cache hit ratio upwards of 95% is considered good. Here we have about 10%.
+3. Branch misses are not high. Large branch misses can lead to a wastage of CPU cycles.
+4. Page faults of 140/sec are high, and can significantly affect the performance. This is concerning because ample RAM was available (usage was only 0.1% for each of the 48 processors) and unused in the system. The page size was 4096kB
+5. 
+Analysis coming up...
 
 ### Scaling
 ![Strong scaling](images/tall_ll.png "Strong scaling")
