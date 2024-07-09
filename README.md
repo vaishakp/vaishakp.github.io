@@ -10,7 +10,7 @@ This is the result of an experimental exercise I carried out on the [Sonic HPC](
 Performance and optimization are important to the development and usage of HPC codes. They improve the quality of the code, reduce the memory footprint, and make it more efficient, saving valuable computing resources and reducing the carbon footprint. 
 
 The basic philosophy behind improving the performance of a code can be broadly classified into three categories:
-1. Avoid unnecessary work. Using the right language tools to only do the work that is required, succinctly and efficiently.
+1. Avoid unnecessary work. Using the right language tools only to do the required work succinctly and efficiently.
 2. Parallel programming. Using all available computing resources, cores, and accelerators.
 3. Use all hardware capabilities. In the context of CPUS, as CPUs evolve, they are equipped with increasing hardware instruction-level capabilities that can perform the same set of operations faster and more efficiently or in a lesser number of instruction cycles. 
 
@@ -153,12 +153,14 @@ int main()
 
 The following can be observed when the above code is run (with e.g. `gcc-13.3`):
 1. If `fma` is enabled, the above outputs `rms: 5.43286e-09` and not zero. Note that '-march=native' enables this on supported CPUs.
-2. By default, `gcc` sets `-ffp-contract=fast`, enabling `fma` if the hardware supports it on all optimization levels greater than `O1`
-3. To turn off `fma` correctly, one needs to use `-ffp-contract=off`. `-mno-fma` does not suffice. In this case one gets `rms =0`
-4. If the std outlines are uncommented, `fma` is not used as intermediate values like `u1, u2, v1, v2, du, dv` are accessed. This holds true even if `fma` is turned on.
-5. Setting `-ffp-contract=on` turns on `fma` only if the chosen language standard supports it. E.g., for c++11 or 17, `fma` is not used across statements but only within an expression.
-6. If the language std is not specified, the default is `-ffp-contract=fast` i.e. contraction happens across statements.
-7. Use of other cos, sin  overloads (double) results in `rms: 0` with `fma` on.
+3. But these are close to precision errors and lower than roundoff errors.
+4. Increased precision would result in lower errors but the above statement will hold. Therefore these are not of serious concern.
+5. By default, `gcc` sets `-ffp-contract=fast`, enabling `fma` if the hardware supports it on all optimization levels greater than `O1`
+6. To turn off `fma` correctly, one needs to use `-ffp-contract=off`. `-mno-fma` does not suffice. In this case, one gets `rms =0`
+7. If the std outlines are uncommented, `fma` is not used as intermediate values like `u1, u2, v1, v2, du, dv` are accessed. This holds true even if `fma` is turned on.
+8. Setting `-ffp-contract=on` turns on `fma` only if the chosen language standard supports it. E.g., for c++11 or 17, `fma` is not used across statements but only within an expression.
+9. If the language std is not specified, the default is `-ffp-contract=fast` i.e. contraction happens across statements.
+10. Use of other cos, sin  overloads (double) results in `rms: 0` with `fma` on.
 
 #### Difference in assembly code
 ![image](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/dbb09c06-502c-4a47-b1be-52f3737c496e)
@@ -225,16 +227,23 @@ A typical SpEC evolution process has the following stats (after optimization):
 
 #### Analysis:
 
-1. 48% of backend cycles are stalled. This means the CPU is wasting cycles waiting for data to arrive from the memory. SpEC can benefit from backend bound tuning (see e.g. intel's [backend tuning](https://www.amd.com/en/developer/uprof/uprof-eula.html?filename=AMDuProf_Linux_x64_4.2.850.tar.bz2) ).
-2. The above and point 5 below indicate that SpEC backend stalls are core-bound and not memory-bound. This is understandable because RHS evaluations make up most of the computing load in SpEC.
-3. A cache hit ratio upwards of 95% is considered good. Here we have about 10%.
-4. Branch misses are not high. Large branch misses can lead to a wastage of CPU cycles.
-5. Page faults of 140/sec are high, and can significantly affect the performance. This is concerning because ample RAM was available (usage was only 0.1% for each of the 48 processors) and unused in the system. The page size was 4096kB
-6. 
+1. Frontend pipeline stalls are low. Also consistent with decent IPC.
+2. 48% of backend cycles (the pipeline here is responsible for executing instructions) are stalled. This means that new CPU instructions are waiting in the pipe.
+3. There are two types of CPU backend stalls.
+   1. Memory-bound.This backlog in the pipeline happens when the cycles are waiting for data to arrive from the memory 
+   2. CPU-bound. The other is when instructions are not retiring when they are expected to. Math-intensive operations (e.g. division) involve instructions that finish in more than one cycle. This is the reason for SpEC's backend backlog.
+4. SpEC could benefit from backend-bound tuning. E.g. more loop unrolling may improve this.
+5. The above and point 5 below indicate that SpEC backend stalls are core-bound and not memory-bound. This is understandable because RHS evaluations make up most of the computing load in SpEC.
+6. A cache hit ratio upwards of 95% is considered good. Here we have about 10%.
+7. Branch misses are pretty good. Large branch misses can lead to a wastage of CPU cycles.
+8. RAM usage was only 0.1% for each of the 48 processors and a large amount (of 250GiB) was unused in the system. Is SpEC forcibly trying to use less memory without consideration of available memory due to historical reasons? This also supports CPU-bound backend pipeline stalls.
+9. Page faults of 140/sec are high, and can significantly affect the performance. This is concerning because ample RAM was available (see point above). The page size was 4096kB. Again, is SpEC being frugal on the memory budget?
 More coming up...
 
 #### References:
 [1] https://faculty.cs.niu.edu/~winans/notes/patmc.pdf
+[2] https://www.intel.com/content/www/us/en/docs/vtune-profiler/cookbook/2023-0/top-down-microarchitecture-analysis-method.html
+[3]
 
 
 ### Scaling
