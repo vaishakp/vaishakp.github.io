@@ -245,12 +245,12 @@ A typical SpEC evolution process has the following stats (after optimization):
       89.482851720 seconds time elapsed
 ```
 
-#### Analysis:
+#### Analysis and Observations:
 
 1. Frontend pipeline stalls are low. Also consistent with decent IPC.
-2. 48% of backend cycles (the pipeline here is responsible for executing instructions) are stalled. This means that new CPU instructions are waiting in the pipe.
+2. 48% of backend cycles (the pipeline here is responsible for executing instructions) are stalled. This means that new dependent CPU instructions are waiting in the pipe.
 3. There are two types of CPU backend stalls.
-   1. Memory-bound.This backlog in the pipeline happens when the cycles are waiting for data to arrive from the memory 
+   1. Memory-bound.This backlog in the pipeline happens when the cycles are waiting for data to arrive from the memory.
    2. CPU-bound. The other is when instructions are not retiring when they are expected to. Math-intensive operations (e.g. division) involve instructions that finish in more than one cycle. This is the reason for SpEC's backend backlog.
 4. SpEC could benefit from backend-bound tuning. E.g. more loop unrolling may improve this.
 5. The above and point 5 below indicate that SpEC backend stalls are core-bound and not memory-bound. This is understandable because RHS evaluations make up most of the computing load in SpEC.
