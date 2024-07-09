@@ -195,6 +195,7 @@ Some tests on SpEC fail at the file comparison stages if compared with output in
 
 
 ### ID solver
+These plots are obtained with optimization level 1 (i.e. with older glibc). Newer plots to be updated.
 
 ![Wall time Ecc0](images/WallTimeBench_Ecc0.png)
 ![CPU time Ecc0](images/CPUTimeBenchAllEcc0.png "CPU time")
