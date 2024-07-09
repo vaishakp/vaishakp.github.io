@@ -200,12 +200,22 @@ Some tests on SpEC fail at the file comparison stages if compared with output in
 ![CPU time Ecc0](images/CPUTimeBenchAllEcc0.png "CPU time")
 
 ### Evolution
-To be added
 
+The plot below shows the evolution benchmark of SpEC performed on an equal mass ratio non-spinning BBH simulation.
+
+![spec_evol_bench](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/58f4efc6-dbb9-4b93-8bc7-c0714d6db728)
+
+#### Inferences
+1. Consistent optimizations of SpEC result in noticeable improvements (20% - 133%) in evolution speeds.
+2. I found with glibc that were responsible for slower code paths on AMD systems. Upgrading to a version that fixed these bugs results in a further 75% performance improvement.
+3. Partial link-time optimization of SpEC source code surprisingly results in slower performance. Need to test all lib optimization.
 
 #### Profiling
 
 A typical SpEC evolution process has the following stats (after optimization):
+
+`perf` was used to obtain these samples. 
+
 ```
 89,480.31 msec task-clock:u                     #    1.000 CPUs utilized             
                  0      context-switches:u               #    0.000 /sec                      
@@ -241,15 +251,14 @@ A typical SpEC evolution process has the following stats (after optimization):
 More coming up...
 
 #### References:
-[1] https://faculty.cs.niu.edu/~winans/notes/patmc.pdf
-[2] https://www.intel.com/content/www/us/en/docs/vtune-profiler/cookbook/2023-0/top-down-microarchitecture-analysis-method.html
-[3]
+1. https://faculty.cs.niu.edu/~winans/notes/patmc.pdf
+2. https://www.intel.com/content/www/us/en/docs/vtune-profiler/cookbook/2023-0/top-down-microarchitecture-analysis-method.html
 
 
 ### Scaling
 ![Strong scaling](images/tall_ll.png "Strong scaling")
 
-Please note that this is still in the Junk radiation phase. More plots for stabilized evolution phase underway.
+Please note that this is still in the Junk radiation phase. More plots for the stabilized evolution phase are underway.
 
 
 # Conclusions
