@@ -249,6 +249,9 @@ More coming up...
 ### Scaling
 ![Strong scaling](images/tall_ll.png "Strong scaling")
 
+Please note that this is still in the Junk radiation phase. More plots for stabilized evolution phase underway.
+
+
 # Conclusions
 1. Compile-time optimizations are usually one of the final stages of performance optimization in software programming. This allows us to squeeze out the best performance given the software and the hardware without changing either.
 2. Investing time in carefully optimizing HPC software at compile time can result in noticeable performance improvements and speedups.
