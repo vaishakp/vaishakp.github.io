@@ -117,6 +117,17 @@ Not used in the below benchmarks, work in progress.
 The following flags were used to compile ALL the software/libraries:
 `-mavx2, -mfma, -fPIC, -O3, -march=native`
 
+
+#### Do we need PIC/PIE, shared/static libraries?
+1. PIC/ PIE refers to position-independent code and executable respectively, allowing computer programs to run core irrespective of their location in memory.
+2. The flags `-fPIC` and `-fpic` are usually different, with the latter generating more machine-specific code (at the cost of portability) that is faster and smaller in size.
+3. In the olden days, memory was minimal and we didn't have virtual memory. It was advantageous to be able to execute a program that has code anywhere in the memory.
+4. If we wish to build an application with PIC/PIE enabled, then it could use either static or dynamic (shared) libraries (or both). However, they must all be compiled with PIC enabled.
+5.  Compiling and linking a static library with a shared library results in the code of the static library being copied into the dynamic library.
+6.  It is advantageous to compile an application like SpEC with shared libraries due to modularity in the dependencies. This would be useful, e.g. in benchmarking.
+7.  Statically linked applications used to be marginally faster than dynamically lined ones, since there is no overhead time in looking up for the libraries at run time. However, this difference is now very negligible.
+8.  Statically linking is also faster because of better opportunities for optimization due to the monolithic nature. However, link-time optimization has almost made this moot.
+
 ### Possible issues with FMA
 `FMA` itself is [IEEE 754](https://ieeexplore.ieee.org/document/8766229) compliant and leads to performance and accuracy gains. However, some isolated examples or math expressions exist, which should be trivially zero, that lead to anomalous loss of accuracy, typically at the level of 1e-7 for single and 1e-14 for double precision operations due to representation errors. E.g. consider
 ```
