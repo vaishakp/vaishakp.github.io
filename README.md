@@ -200,6 +200,8 @@ These plots are obtained with optimization level 1 (i.e. with older glibc). Newe
 ![Wall time Ecc0](images/WallTimeBench_Ecc0.png)
 ![CPU time Ecc0](images/CPUTimeBenchAllEcc0.png "CPU time")
 
+![id_solver_bench](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/7e5cfbd1-d0f5-486e-8ad7-0e18603bd3b7)
+
 
 SpEC ID solver is also heavily PETSc dependent (as expected). Optimization of PETSc may have been one of the main reasons for the improved performance.
 
