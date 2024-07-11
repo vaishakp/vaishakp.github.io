@@ -117,7 +117,7 @@ Not used in the below benchmarks, work in progress.
 The following flags were used to compile ALL the software/libraries:
 `-mavx2, -mfma, -fPIC, -O3, -march=native`
 
-### Issues with FMA
+### Possible issues with FMA
 `FMA` itself is [IEEE 754](https://ieeexplore.ieee.org/document/8766229) compliant and leads to performance and accuracy gains. However, some isolated examples or math expressions exist, which should be trivially zero, that lead to anomalous loss of accuracy, typically at the level of 1e-7 for single and 1e-14 for double precision operations due to representation errors. E.g. consider
 ```
 #include <iostream>
@@ -233,16 +233,16 @@ Please note that the performance sampler reported in the image above was used wi
 
 Using a sampling or an instrumentation profiler, we can measure the performance of our application in detail. E.g., using the bundled tool `perf` and the following command, one can learn more about an application:
 
-```perf record --event cache-references,cache-misses,cycles,instructions,branches,faults -p <pid>```
+```perf stat --event cache-references,cache-misses,cycles,instructions,branches,faults -p <pid>```
 
-A typical SpEC ID process has the following cache stats:
+A typical SpEC ID process has the following cache stats (after optimization i.e. v2):
 ```
     16,955,831,905      cache-references:u                                                    
        415,235,758      cache-misses:u                   #    2.449 % of all cache refs       
 
       41.040245971 seconds time elapsed
 ```
-A typical SpEC evolution process has the following stats (after optimization):
+A typical SpEC evolution process has the following stats (after optimization i.e. v2):
 
 `perf` was used to obtain these samples. 
 
