@@ -230,6 +230,14 @@ The plot below shows the evolution benchmark of SpEC performed on an equal mass 
 Please note that the performance sampler reported in the image above was used with optimization version 1 (older glibc).
 #### Profiling
 
+
+A typical SpEC ID process has the following cache stats:
+```
+    16,955,831,905      cache-references:u                                                    
+       415,235,758      cache-misses:u                   #    2.449 % of all cache refs       
+
+      41.040245971 seconds time elapsed
+```
 A typical SpEC evolution process has the following stats (after optimization):
 
 `perf` was used to obtain these samples. 
@@ -262,7 +270,7 @@ A typical SpEC evolution process has the following stats (after optimization):
    2. CPU-bound. The other is when instructions are not retiring when they are expected to. Math-intensive operations (e.g. division) involve instructions that finish in more than one cycle. This is the reason for SpEC's backend backlog.
 4. SpEC could benefit from backend-bound tuning. E.g. more loop unrolling may improve this.
 5. The above and point 5 below indicate that SpEC backend stalls are core-bound and not memory-bound. This is understandable because RHS evaluations make up most of the computing load in SpEC.
-6. A cache hit ratio upwards of 95% is considered good. Here we have about 10%.
+6. A cache hit ratio upwards of 95% is considered good. Here we have about 97% in the ID stage and 90% in the Evolution stage.
 7. Branch misses are pretty good. Large branch misses can lead to a wastage of CPU cycles.
 8. RAM usage was only 0.1% for each of the 48 processors and a large amount (of 250GiB) was unused in the system. Is SpEC forcibly trying to use less memory without consideration of available memory due to historical reasons? This also supports CPU-bound backend pipeline stalls.
 9. Page faults of 140/sec are high, and can significantly affect the performance. This is concerning because ample RAM was available (see point above). The page size was 4096kB. Again, is SpEC being frugal on the memory budget?
