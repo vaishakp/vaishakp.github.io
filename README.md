@@ -99,6 +99,7 @@ Note:
 2. Please preserve the ordering of the software install.
 3. Please use the default flags "-O3 -march=native -fPIC" for all dependent software not listed above.
 4. If you find any broken links/issues with the pkginstaller script above, please raise an issue [here](https://gitlab.com/vaishakp/pkginstaller/-/issues), even if you could fix it yourself. This will improve the script and help others.
+5. These should be strictly treated as templates and are not designed to work out of the box. Please make necessary changes depending on your system type before proceeding.
 
 
 #### Other
