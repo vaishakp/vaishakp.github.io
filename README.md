@@ -231,6 +231,9 @@ The plot below shows the evolution benchmark of SpEC performed on an equal mass 
 Please note that the performance sampler reported in the image above was used with optimization version 1 (older glibc).
 #### Profiling
 
+Using a sampling or an instrumentation profiler, we can measure the performance of our application in detail. E.g., using the bundled tool `perf` and the following command, one can learn more about an application:
+
+```perf record --event cache-references,cache-misses,cycles,instructions,branches,faults -p <pid>```
 
 A typical SpEC ID process has the following cache stats:
 ```
