@@ -217,10 +217,13 @@ The plot below shows the evolution benchmark of SpEC performed on an equal mass 
 
 #### Inferences
 1. Consistent optimizations of SpEC result in noticeable improvements (20% - 133%) in evolution speeds.
-2. I found with glibc that were responsible for slower code paths on AMD systems. Upgrading to a version that fixed these bugs results in a further 75% performance improvement.
-3. Partial link-time optimization of SpEC source code surprisingly results in slower performance. Need to test all lib optimization.
-4. Note that `xpmem` and `knem` were turned off in glibc-2.34 compilation. These are expected to further add to performance improvements.
-5. Preloading `amd-libmem` should also lead to further improvements, as SpEC seems to spend considerable time in mem operations.
+2. I found issues in older glibc versions (<v2.34) that were responsible for slower code paths on AMD systems. Upgrading to a version that fixes these bugs results in a further 75% performance improvement. This can mostly be attributed to:
+   1.  vector instructions
+   2.  faster implementations of low-level mem operations
+   3.  correct reading and usage of cache on AMD systems. 
+4. Partial link-time optimization of SpEC source code surprisingly results in slower performance. Need to test all lib optimization.
+5. Note that `xpmem` and `knem` were turned off in glibc-2.34 compilation. These are expected to further add to performance improvements.
+6. Preloading `amd-libmem` should also lead to further improvements, as SpEC seems to spend considerable time in mem operations.
 
    ![Screenshot from 2024-07-09 16-51-51](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/394a6bfe-d28f-4ed0-b6fd-1d21919b30ae)
 
