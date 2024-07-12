@@ -1,4 +1,4 @@
-# Compile-time optimizations of SpEC on HPCs
+![id_solver_bench](https://github.com/user-attachments/assets/6c5ddb86-4377-4be2-ba85-53955a9f7638)# Compile-time optimizations of SpEC on HPCs
 
 In this document, I describe the compile-time optimizations (experimented between Nov 2022 and March 2023) that led to significant performance improvements in Binary Black Hole simulations using SpEC. 
 This document is relevant for HPCs with x86-64 CPUs, especially for AMD CPUs. It also implements many generic CPU optimizations.
@@ -59,10 +59,12 @@ In general software applications, the priority of the developers is towards adap
 17. For benchmarking certain third-party linear algebra libraries with various combinations of compilers, please refer to www.gitlab.com/vaishakp/benchmarks.git
 18. **glibc**. `glibc` is one of the most important libraries that determines performance. Usually, the Linux kernel is inseparable from glib versioning. This means that one cannot upgrade `glibc` safely and consistently without recompiling the kernel. I highly recommend using `glibc > 2.34`, especially on AMD systems.
     1. On older versions, `glibc` was not correctly parsing the available cache on most AMD and some intel systems. This was a huge disadvantage to the newer AMD processors:
+         glibc 2.17                                                                                    |  glibc 2.34
+        :---------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------:
+        ![old_cache](https://github.com/user-attachments/assets/fcb44614-ecd5-45ad-861b-d2b2b040cc44)  |  ![new_cache](https://github.com/user-attachments/assets/19c18c1a-4a36-4a3e-aa75-fd89ae84c1d5)
     2. On older versions, a certain part of the code in `glibc` contributed by a certain corporation was forcing slower code paths on AMD systems.
-    3. The implementation of various math libraries has been improved in newer `glibc` versions with e.g. vector intrinsic support.
-    If the HPC OS is using older `glibc` versions, I recommend upgrading the OS.
-    4. It is difficult to compile older `gcc` versions (~< 13.2) on newer glibc (~>2.17) as some packages (that were not being maintained) that `gcc` depends on had been dropped from the Kernel. This was fixed in newer versions of gcc.
+    3. The implementation of various math libraries has been improved in newer `glibc` versions with e.g. vector intrinsic support. If the HPC OS is using older `glibc` versions, I recommend upgrading the OS.
+    4. It is difficult to compile older `gcc` versions ( $\approx$ < 13.2) on newer glibc ($\approx$ >2.17) as some packages (that were not being maintained) that `gcc` depends on had been dropped from the Kernel. This was fixed in newer versions of gcc.
 19. **cmake**. `cmake` is the preferred build system for various dependent packages (like `petsc`). Recent versions of cmake > 3.25.2 fail to compile if the storage is network-attached. 
 19. **Other experiments**. Details on additional experiments with `SpEC` can be found at https://gitlab.com/vaishakp/spec-on-hpcs
     
@@ -189,9 +191,6 @@ Notes:
 4. The code with FMA on (i.e. LHS) completes the execution with (4) fewer instructions because of FMA.
 
 
-
-
-
 ## Compiling SpEC
 To be added
 ### ~/.SpEC
@@ -231,7 +230,9 @@ Please note that the performance sampler reported in the image above was used wi
 
 The plot below shows the evolution benchmark of SpEC performed on an equal mass ratio non-spinning BBH simulation.
 
-![spec_evol_bench](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/58f4efc6-dbb9-4b93-8bc7-c0714d6db728)
+![spec_evol_bench_v2](https://github.com/user-attachments/assets/37f93420-e45d-4c8f-a142-2aadcb80fe01)
+
+![spec_evol_speedup](https://github.com/user-attachments/assets/af1ea551-5c55-49a9-ba9a-6f95a78ff392)
 
 #### Evolution hotspots 
 Time spent by SpEC evolution in different libraries.
