@@ -310,6 +310,9 @@ More coming up...
 
 
 ### Scaling
+
+Scaling results on SpEC are not very useful -- this is because SpEC can only use MPI ranks equal to the number of subdomains available. This means SpEC is limited to around 70 MPI ranks.
+
 ![Strong scaling](images/tall_ll.png "Strong scaling")
 
 Please note that this is still in the Junk radiation phase. More plots for the stabilized evolution phase are underway.
