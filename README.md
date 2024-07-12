@@ -62,6 +62,8 @@ In general software applications, the priority of the developers is towards adap
     2. On older versions, a certain part of the code in `glibc` contributed by a certain corporation was forcing slower code paths on AMD systems.
     3. The implementation of various math libraries has been improved in newer `glibc` versions with e.g. vector intrinsic support.
     If the HPC OS is using older `glibc` versions, I recommend upgrading the OS.
+    4. It is difficult to compile older `gcc` versions (~< 13.2) on newer glibc (~>2.17) as some packages (that were not being maintained) that `gcc` depends on had been dropped from the Kernel. This was fixed in newer versions of gcc.
+19. **cmake**. `cmake` is the preferred build system for various dependent packages (like `petsc`). Recent versions of cmake > 3.25.2 fail to compile if the storage is network-attached. 
 19. **Other experiments**. Details on additional experiments with `SpEC` can be found at https://gitlab.com/vaishakp/spec-on-hpcs
     
 ## Compiling SpEC
@@ -214,6 +216,8 @@ These plots are obtained with optimization level 1 (i.e. with older glibc). Newe
 ![Wall time Ecc0](images/WallTimeBench_Ecc0.png)
 ![CPU time Ecc0](images/CPUTimeBenchAllEcc0.png "CPU time")
 
+#### ID hotspots
+Time spent by SpEC ID solver in different libraries.
 ![id_solver_bench](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/7e5cfbd1-d0f5-486e-8ad7-0e18603bd3b7)
 
 
@@ -221,13 +225,17 @@ SpEC ID solver is also heavily PETSc dependent (as expected). Optimization of PE
 
 ![Screenshot from 2024-07-09 17-03-24](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/e8b4f14f-1790-4f7e-913d-38feedd5bbec)
 
-Please note that the performance sampler reported in the image above was used with optimization version 1 (older glibc).
+Please note that the performance sampler reported in the image above was used with optimization version 1 (older glibc). Thus the use of slower (SSE) codepaths.
 
 ### Evolution
 
 The plot below shows the evolution benchmark of SpEC performed on an equal mass ratio non-spinning BBH simulation.
 
 ![spec_evol_bench](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/58f4efc6-dbb9-4b93-8bc7-c0714d6db728)
+
+#### Evolution hotspots 
+Time spent by SpEC evolution in different libraries.
+![Screenshot from 2024-07-09 16-51-51](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/394a6bfe-d28f-4ed0-b6fd-1d21919b30ae)
 
 #### Inferences
 1. Consistent optimizations of SpEC result in noticeable improvements (20% - 133%) in evolution speeds.
@@ -239,9 +247,11 @@ The plot below shows the evolution benchmark of SpEC performed on an equal mass 
 5. Note that `xpmem` and `knem` were turned off in glibc-2.34 compilation. These are expected to further add to performance improvements.
 6. Preloading `amd-libmem` should also lead to further improvements, as SpEC seems to spend considerable time in mem operations.
 
-   ![Screenshot from 2024-07-09 16-51-51](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/394a6bfe-d28f-4ed0-b6fd-1d21919b30ae)
+
+
 
 Please note that the performance sampler reported in the image above was used with optimization version 1 (older glibc).
+
 #### Profiling
 
 Using a sampling or an instrumentation profiler, we can measure the performance of our application in detail. E.g., using the bundled tool `perf` and the following command, one can learn more about an application:
