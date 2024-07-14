@@ -1,0 +1,17 @@
+# Set the initial data parameters
+
+# Orbital parameters
+$Omega0 = 0.024480906066;
+$adot0 = -4.49519210648e-05;
+$D0 = 11;
+
+# Physical parameters (spins are dimensionless)
+$MassRatio = 4;
+@SpinA = (0,0,0);
+@SpinB = (0,0,0);
+
+# Evolve after initial data completes?
+$Evolve = 1;
+
+# IDType: "SKS", "SHK", "SSphKS" or "CFMS".
+$IDType = "SKS";
