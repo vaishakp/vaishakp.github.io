@@ -132,7 +132,8 @@ The following flags were used to compile ALL the software/libraries:
 7.  Statically linked applications used to be marginally faster than dynamically lined ones, since there is no overhead time in looking up for the libraries at run time. However, this difference is now very negligible.
 8.  Statically linking is also faster because of better opportunities for optimization due to the monolithic nature. However, link-time optimization has almost made this moot.
 9.   Compiling shared libraries without ` PIC` usually does not end well.
-10.   A PIE is fully made of PIC supported code.
+10.   A PIE is fully made of PIC-supported code.
+11.   Dynamic linking can be enabled in SpEC by setting the env variable `DYNAMIC_LINKING=true` (recommended). This will pass the PIC/PIE flags to the compiler.
 
 ### Possible issues with FMA
 `FMA` itself is [IEEE 754](https://ieeexplore.ieee.org/document/8766229) compliant and leads to performance and accuracy gains. However, some isolated examples or math expressions exist, which should be trivially zero, that lead to anomalous loss of accuracy, typically at the level of 1e-7 for single and 1e-14 for double precision operations due to representation errors. E.g. consider
@@ -200,13 +201,16 @@ To be added
 ### Machine environment
 ### flags
 ### Tests
+
+
+
 Some tests on SpEC fail at the file comparison stages if compared with output in existing  Save directories. It is recommended to re-generate tests in these cases.
 
 ## Results
 `SpEC` was compiled and installed on `sonic` with dynamic linking. The storage in use was a BeeGFS non-SSD spinning disk.
 
 1. Here, "0" is the optimized version of SpEC with custom-compiled libraries using `gcc-11.1.0`. "1" is spack-compiled SpEC (with `spack`-compiled external libraries) using `gcc-9.4`.
-1. The system is a simple equal mass, nonspinning BBH. Parameters can be obtained from [here]().
+1. The system is a simple equal mass, nonspinning BBH. Parameters can be obtained from [here](q1a0Params.input).
 
 
 ### ID solver
@@ -238,12 +242,8 @@ Benchmark for $q=4$:
 
 ![spec_evol_speedup_q4](https://github.com/user-attachments/assets/3fdbd069-1568-45d2-933c-639eb6d57f04)
 
+Parameters can be obtained from [here](q0p25a0Params.input).
 
-#### Evolution hotspots 
-Time spent by SpEC evolution in different libraries.
-![Screenshot from 2024-07-09 16-51-51](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/394a6bfe-d28f-4ed0-b6fd-1d21919b30ae)
-
-![outmonA](https://github.com/user-attachments/assets/7641a6ca-2eec-4ed9-b5cb-4f7977f32d6c)
 
 #### Inferences
 1. Consistent optimizations of SpEC result in noticeable improvements (20% - 133%) in evolution speeds.
@@ -262,7 +262,7 @@ Please note that the performance sampler reported in the image above was used wi
 
 #### Profiling
 
-Using a sampling or an instrumentation profiler, we can measure the performance of our application in detail. E.g., using the bundled tool `perf` and the following command, one can learn more about an application:
+Using a sampling or an instrumentation profiler, we can measure the performance of our application in detail. E.g., By [using the bundled performance analysis tool `perf`](perf.md) and the following command, one can learn more about an application:
 
 ```perf stat --event cache-references,cache-misses,cycles,instructions,branches,faults -p <pid>```
 
@@ -295,6 +295,17 @@ A typical SpEC evolution process has the following stats (after optimization i.e
 
       89.482851720 seconds time elapsed
 ```
+##### Evolution hotspots 
+Time spent by SpEC evolution in different libraries.
+![Screenshot from 2024-07-09 16-51-51](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/394a6bfe-d28f-4ed0-b6fd-1d21919b30ae)
+
+By [using `gprof`](gprof.md), one can find out where most of the computation is spent in.
+
+![outmonA](https://github.com/user-attachments/assets/7641a6ca-2eec-4ed9-b5cb-4f7977f32d6c)
+
+###### Analysis 
+To be added
+
 
 #### Analysis and Observations:
 
