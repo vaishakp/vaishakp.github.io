@@ -1,4 +1,4 @@
-![id_solver_bench](https://github.com/user-attachments/assets/6c5ddb86-4377-4be2-ba85-53955a9f7638)# Compile-time optimizations of SpEC on HPCs
+# Compile-time optimizations of SpEC on HPCs
 
 In this document, I describe the compile-time optimizations (experimented between Nov 2022 and March 2023) that led to significant performance improvements in Binary Black Hole simulations using SpEC. 
 This document is relevant for HPCs with x86-64 CPUs, especially for AMD CPUs. It also implements many generic CPU optimizations.
@@ -234,9 +234,16 @@ The plot below shows the evolution benchmark of SpEC performed on an equal mass 
 
 ![spec_evol_speedup](https://github.com/user-attachments/assets/af1ea551-5c55-49a9-ba9a-6f95a78ff392)
 
+Benchmark for $q=4$:
+
+![spec_evol_speedup_q4](https://github.com/user-attachments/assets/3fdbd069-1568-45d2-933c-639eb6d57f04)
+
+
 #### Evolution hotspots 
 Time spent by SpEC evolution in different libraries.
 ![Screenshot from 2024-07-09 16-51-51](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/394a6bfe-d28f-4ed0-b6fd-1d21919b30ae)
+
+![outmonA](https://github.com/user-attachments/assets/7641a6ca-2eec-4ed9-b5cb-4f7977f32d6c)
 
 #### Inferences
 1. Consistent optimizations of SpEC result in noticeable improvements (20% - 133%) in evolution speeds.
