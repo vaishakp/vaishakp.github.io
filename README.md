@@ -59,9 +59,9 @@ In general software applications, the priority of the developers is towards adap
 17. For benchmarking certain third-party linear algebra libraries with various combinations of compilers, please refer to www.gitlab.com/vaishakp/benchmarks.git
 18. **glibc**. `glibc` is one of the most important libraries that determines performance. Usually, the Linux kernel is inseparable from glib versioning. This means that one cannot upgrade `glibc` safely and consistently without recompiling the kernel. I highly recommend using `glibc > 2.34`, especially on AMD systems.
     1. On older versions, `glibc` was not correctly parsing the available cache on most AMD and some intel systems. This was a huge disadvantage to the newer AMD processors:
-         glibc 2.17                                                                                    |  glibc 2.34
-        :---------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------:
-        ![old_cache](https://github.com/user-attachments/assets/fcb44614-ecd5-45ad-861b-d2b2b040cc44)  |  ![new_cache](https://github.com/user-attachments/assets/19c18c1a-4a36-4a3e-aa75-fd89ae84c1d5)
+        |glibc 2.17                                                                                    |  glibc 2.34 |
+        :---------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------: |
+        |![old_cache](https://github.com/user-attachments/assets/fcb44614-ecd5-45ad-861b-d2b2b040cc44) |  ![new_cache](https://github.com/user-attachments/assets/19c18c1a-4a36-4a3e-aa75-fd89ae84c1d5) |
        
     3. On older versions, a certain part of the code in `glibc` contributed by a certain corporation was forcing slower code paths on AMD systems.
     4. The implementation of various math libraries has been improved in newer `glibc` versions with e.g. vector intrinsic support. If the HPC OS is using older `glibc` versions, I recommend upgrading the OS.
