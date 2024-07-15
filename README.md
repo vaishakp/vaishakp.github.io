@@ -62,9 +62,10 @@ In general software applications, the priority of the developers is towards adap
          glibc 2.17                                                                                    |  glibc 2.34
         :---------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------:
         ![old_cache](https://github.com/user-attachments/assets/fcb44614-ecd5-45ad-861b-d2b2b040cc44)  |  ![new_cache](https://github.com/user-attachments/assets/19c18c1a-4a36-4a3e-aa75-fd89ae84c1d5)
-    2. On older versions, a certain part of the code in `glibc` contributed by a certain corporation was forcing slower code paths on AMD systems.
-    3. The implementation of various math libraries has been improved in newer `glibc` versions with e.g. vector intrinsic support. If the HPC OS is using older `glibc` versions, I recommend upgrading the OS.
-    4. It is difficult to compile older `gcc` versions ( $\approx$ < 13.2) on newer glibc ($\approx$ >2.17) as some packages (that were not being maintained) that `gcc` depends on had been dropped from the Kernel. This was fixed in newer versions of gcc.
+       
+    3. On older versions, a certain part of the code in `glibc` contributed by a certain corporation was forcing slower code paths on AMD systems.
+    4. The implementation of various math libraries has been improved in newer `glibc` versions with e.g. vector intrinsic support. If the HPC OS is using older `glibc` versions, I recommend upgrading the OS.
+    5. It is difficult to compile older `gcc` versions ( $\approx$ < 13.2) on newer glibc ($\approx$ >2.17) as some packages (that were not being maintained) that `gcc` depends on had been dropped from the Kernel. This was fixed in newer versions of gcc.
 19. **cmake**. `cmake` is the preferred build system for various dependent packages (like `petsc`). Recent versions of cmake > 3.25.2 fail to compile if the storage is network-attached. 
 19. **Other experiments**. Details on additional experiments with `SpEC` can be found at https://gitlab.com/vaishakp/spec-on-hpcs
     
