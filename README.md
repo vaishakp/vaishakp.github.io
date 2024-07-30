@@ -338,6 +338,11 @@ Scaling results on SpEC are not very useful -- this is because SpEC can only use
 
 Please note that the first plot is is still in the Junk radiation phase ($t\sim100M$). The second one is shows the speeds at $t\sim 930M$. 
 
+#### Inferences
+1. The Optimized (v2) SpEC scales better than v1, almost linearly within a node.
+2. Tests involving more than one node are underway.
+3. The better scaling in v2 is suggestive of efficient use of all the codes, and lesser idle time. This is primarily facilitated by better use of vectorization, FMA and better cache hits.
+
 # Conclusions
 1. Compile-time optimizations are usually one of the final stages of performance optimization in software programming. This allows us to squeeze out the best performance given the software and the hardware without changing either.
 2. Investing time in carefully optimizing HPC software at compile time can result in noticeable performance improvements and speedups.
