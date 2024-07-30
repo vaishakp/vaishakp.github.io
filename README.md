@@ -332,10 +332,11 @@ More coming up...
 
 Scaling results on SpEC are not very useful -- this is because SpEC can only use MPI ranks equal to the number of subdomains available. This means SpEC is limited to around 70 MPI ranks.
 
-![Strong scaling](images/tall_ll.png "Strong scaling")
+![Strong scaling v1](images/tall_ll.png "Strong scaling")
+![Strong scaling v1 and v2](images/strong_scaling_v1_v2.png)
 
-Please note that this is still in the Junk radiation phase. More plots for the stabilized evolution phase are underway.
 
+Please note that the first plot is is still in the Junk radiation phase ($t\sim100M$). The second one is shows the speeds at $t\sim 930M$. 
 
 # Conclusions
 1. Compile-time optimizations are usually one of the final stages of performance optimization in software programming. This allows us to squeeze out the best performance given the software and the hardware without changing either.
