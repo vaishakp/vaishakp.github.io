@@ -18,7 +18,7 @@ The basic philosophy behind improving the performance of a code can be broadly c
 
 ### Why compile-time optimization?
 
-Optimizations in 1 and 2 above are usually done in the development phase and require changes to the source code. While certain aspects of point three require changing the source code, there are certain other aspects of it that do not require changing the source code. From one perspective, this is simpler than the other two. Compile-time optimization is one such approach. This article is only concerned with the third point above. The aim is to use the available capabilities of the compiler to make the most of the available hardware capabilities of the HPC. 
+Optimizations in 1 and 2 above are usually done in the development phase and require changes to the source code. While certain aspects of point three require changing the source code, certain other aspects of it do not require changing the source code. From one perspective, this is simpler than the other two. Compile-time optimization is one such approach. This article is only concerned with the third point above. The aim is to use the compiler's available capabilities to make the most of the HPC's hardware capabilities. 
 
 1. Modern c/c++ compilers are gaining increasing sophistication in emitting efficient and optimized code from sources tailored to the hardware. 
 2. Many high-performance scientific numerical codes like SpEC depend on an array of third-party libraries that implement various mathematical operations and numerical algorithms that are widely and frequently called e.g. `BLAS`, `GSL`, etc. Optimizing these for the native hardware leads to performance benefits.
@@ -30,7 +30,7 @@ All this can be obtained without having to change the source code.
 In general software applications, the priority of the developers is towards adaptability and compatibility to a wide range of hardware capabilities and security. This brings severe limitations to the type of optimizations that can be carried out. However, for scientists/numerical relativists, performance (without loss of accuracy) is the priority. We often deal with a limited range of HPC hardware that does not change on a day-to-day basis. Thus it makes sense to invest time in carefully tailoring the software we use to the available hardware to make use of all its hardware capabilities, sacrificing portability. This document describes one such undertaking.
 
 ## General approach
-1. **Find CPU capabilities**. Find out the hardware capabilities of the CPU and what major modern institutions are supported and turn them on at compile time. In most cases, most performance gains result from the use of all the native instructions, especially the `AVX` instruction sets. I recommend using `avx2` over `avx512`. Although `avx512` does result in performance gains over `avx2`, this is not always the case in my experience. One of the reasons is that `avx512` is power-hungry and results in more thermal throttling. Furthermore, it is more common to find and group e.g. 8 double data types to perform a 256-bit vector operation than a 512-bit one.
+1. **Find CPU capabilities**. Find out the hardware capabilities of the CPU and what major modern institutions are supported by them and turn them on at compile time. In most cases, most performance gains result from the use of all the native instructions, especially the `AVX` instruction sets. I recommend using `avx2` over `avx512`. Although `avx512` does result in performance gains over `avx2`, this is not always the case in my experience. One of the reasons is that `avx512` is power-hungry and results in more thermal throttling. Furthermore, it is more common to find and group e.g. 8 double data types to perform a 256-bit vector operation than a 512-bit one.
 2. **FMA**. The use of `FMA` leads to performance gains. However, it is to be noted that if math is not written safely, this can lead to large errors. E.g. take a look at the section [below](#issues-with-fma).
 4. **Linking**. The use of static linking often leads to better performance. When profiling, it is advantageous to use dynamic libraries with `PIC`/`PIE`.
 5. **Lib versions**. Using the latest version of libraries e.g. SpEC ID solver uses `PETSc` internally. The use of recent versions showed performance benefits.
@@ -77,7 +77,7 @@ We recommend setting up third-party libraries in a separate location, preferably
 We will use [environment modules](https://modules.readthedocs.io/en/latest/INSTALL.html) to manage the loading and unloading of libraries.
 
 
-The following is a list of libraries that have been successfully compiled and used with SpEC with the best (yet) performance. This is informed by profiling.
+The following is a list of libraries that have been successfully compiled and used with SpEC and have had the best (yet) performance. This is informed by profiling.
 
 1. [Environment modules](https://modules.readthedocs.io/en/latest/INSTALL.html). Setup manually.
 2. [perl](https://www.perl.org/get.html) 5.16.3, 5.31.1. Have noted compatibility issues on newer versions of Perl with SpEC.
@@ -117,6 +117,11 @@ Not used in the below benchmarks, work in progress.
    4. amd-libm
    5. amd-libmem
 
+
+# CPU specs
+
+1. AMD Epyc 7352, 48 core CPU (24 x 2)
+2. 2.3GHz (3.2GHz)
 
 ### Compiler flags
 The following flags were used to compile ALL the software/libraries:
