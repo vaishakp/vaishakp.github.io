@@ -250,6 +250,7 @@ Benchmark for $q=4$:
 
 Parameters can be obtained from [here](q0p25a0Params.input).
 
+Evolution speed $\dfrac{d t}{dT}$ for optimization level 1 at Lev1, 2 and 3 are 210, 180, 115 $Mh^{-1}$. 
 
 #### Inferences
 1. Consistent optimizations of SpEC result in noticeable improvements (20% - 133%) in evolution speeds.
