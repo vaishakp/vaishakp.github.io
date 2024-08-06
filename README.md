@@ -335,8 +335,11 @@ Scaling results on SpEC are not very useful -- this is because SpEC can only use
 ![Strong scaling v1](images/tall_ll.png "Strong scaling")
 ![Strong scaling v1 and v2](images/strong_scaling_v1_v2.png)
 
+# Long simulations
 
-Please note that the first plot is is still in the Junk radiation phase ($t\sim100M$). The second one is shows the speeds at $t\sim 930M$. 
+![eccprec01](https://github.com/user-attachments/assets/6e11de92-0d1f-409c-9ad9-37f2b24532ce)
+
+Please note that the first plot is still in the Junk radiation phase ($t\sim100M$). The second one shows the speeds at $t\sim 930M$. 
 
 #### Inferences
 1. The Optimized (v2) SpEC scales better than v1, almost linearly within a node.
