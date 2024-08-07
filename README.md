@@ -313,6 +313,12 @@ A typical SpEC evolution process has the following stats (after optimization i.e
 
       89.482851720 seconds time elapsed
 ```
+
+1. Frontend (fetch and decode) stalls refer to the frontend pipeline not feeding $\mu$Op instructions to the backend pipeline. This could be due to cache misses, failure to decode complex instructions (which is more probable in JIT compilers)
+2. Backend (execution) stalls refer to instructions not retiring on time. This could be due to memory-bound or CPU-bound stalls. The former can happen due to demand load/store instructions i.e. when, e.g. data to compute on is not found in memory and the processor has to look in slower memory. The latter can occur when there are complicated math operations (like square root, and divisions) that could take longer to complete.
+
+
+
 ##### Evolution hotspots 
 Time spent by SpEC evolution in different libraries.
 ![Screenshot from 2024-07-09 16-51-51](https://github.com/vaishakp/vaishakp.github.io/assets/36019754/394a6bfe-d28f-4ed0-b6fd-1d21919b30ae)
