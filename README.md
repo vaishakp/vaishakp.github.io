@@ -380,3 +380,12 @@ Please note that the first plot is still in the Junk radiation phase ($t\sim100M
    2. The behavior of spack compilation flags in the default scenario. Does it use it consistently?
    3. `gcc-11.1.0` may have better compiler optimization capabilities over `gcc-9.4` used here for spack compiled SpEC's benchmark. Also for other third-party libraries.
 7. Overall, optimization can result in at least 15% more runs which would e.g. directly benefit surrogate and modeling.
+8. 
+
+# Outlool/ ToDo
+
+1. More than one node
+2. Link time optimization
+3. Compile and use xpmem/knem
+4. Profile guided optimization
+5. fine tuning (e.g. unrolling loops)
