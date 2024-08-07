@@ -382,9 +382,9 @@ Please note that the first plot is still in the Junk radiation phase ($t\sim100M
 7. Overall, optimization can result in at least 15% more runs which would e.g. directly benefit surrogate and modeling.
 8. 
 
-# Outlool/ ToDo
+# Outlook/ ToDo
 
-1. More than one node
+1. More than one node (~ 25% faster)
 2. Link time optimization
 3. Compile and use xpmem/knem
 4. Profile guided optimization
