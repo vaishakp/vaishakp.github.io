@@ -123,6 +123,17 @@ Not used in the below benchmarks, work in progress.
 1. AMD Epyc 7352, 48 core CPU (24 x 2)
 2. 2.3GHz (3.2GHz)
 
+## Memory Bandwidth
+
+Measured through STREAM, the memory bandwidth is about 1790 GB/s or 1680 GiB/s (Isn't this too much? Typical 3200MT/s Dual channel RAM has 206 GB/s theoretical bandwidth. Is this because of multiple channels?)
+
+Function    Best Rate MB/s  Avg time     Min time     Max time
+Copy:         1720740.1     0.000103     0.000093     0.000148
+Scale:         994205.4     0.000169     0.000161     0.000202
+Add:          1471685.6     0.000174     0.000163     0.000196
+Triad:        1833575.5     0.000162     0.000131     0.000215
+
+
 ### Compiler flags
 The following flags were used to compile ALL the software/libraries:
 `-mavx2, -mfma, -fPIC, -O3, -march=native`
