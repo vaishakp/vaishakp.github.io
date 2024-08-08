@@ -438,6 +438,13 @@ Scaling results on SpEC are not very useful -- this is because SpEC can only use
 ![Strong scaling v1](images/tall_ll.png "Strong scaling")
 ![Strong scaling v1 and v2](images/strong_scaling_v1_v2.png)
 
+
+### Global memory footprint
+
+
+![global_mem_bench](https://github.com/user-attachments/assets/4e06865e-5e28-402e-b359-abe6e60e8dea)
+
+
 # Long simulations
 
 ![eccprec01](https://github.com/user-attachments/assets/6e11de92-0d1f-409c-9ad9-37f2b24532ce)
