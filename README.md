@@ -7,8 +7,11 @@
 2. Finding the latest and the best matching iter-compatible library versions
 3. Different compilers (GCC, clang, aocc; incomplete study)
 4. Different math libraries (lapack, openBlas, aocl; incomplete study)
-5. Profiling (sampling and instrumentation) and benchmarking SpEC BBH runs
-6. Consistent avx2, fma, pic, lto (!) optimizations at O3. Dynamically linked executables.
+5. Build everything manually (semi-automated package available) from source. **No spack**.
+6. Profiling (sampling and instrumentation) and benchmarking SpEC BBH runs
+7. Consistently turning on avx2, fma, pic, lto (!) optimizations at O3.
+8. Dynamically linked executables.
+9. glibc bugs.
 
 # Introduction
 In this document, I describe the compile-time optimizations (experimented between Nov 2022 and March 2023) that led to significant performance improvements in Binary Black Hole simulations using SpEC. 
@@ -79,7 +82,68 @@ In general software applications, the priority of the developers is towards adap
     5. It is difficult to compile older `gcc` versions ( $\approx$ < 13.2) on newer glibc ($\approx$ >2.17) as some packages (that were not being maintained) that `gcc` depends on had been dropped from the Kernel. This was fixed in newer versions of gcc.
 19. **cmake**. `cmake` is the preferred build system for various dependent packages (like `petsc`). Recent versions of cmake > 3.25.2 fail to compile if the storage is network-attached. 
 19. **Other experiments**. Details on additional experiments with `SpEC` can be found at https://gitlab.com/vaishakp/spec-on-hpcs
-    
+
+# Math libraries
+
+## Benchmarks on sonic
+### dgemm
+
+5004 x 5004 matrix, 100X
+
+CentOS 7, glibc v2.17 LAPACK v3.11.0
+
+dgemm | GFLOP/s | Time
+---|---|----
+Sonic gnu + netlib-lapack | 54.71      | 4.681s
+Sonic aocc + aocl         | 54.422     | 4.606s
+Sonic gcc + aocl          | 55.1       | 4.573s
+Sonic gcc + mkl           | 53.95      | 4.546s
+Sonic gcc + mkl amd fix   | 75.13      | 3.336s
+Public                    | 10         | 
+
+
+5004 x 5004 matrix, 5X, 96 threads
+
+RL9, glibc v2.34,  LAPACK v3.12.0
+
+dgemm | GFLOP/s | Time
+---|---|----
+Sonicv2 gnu + netlib-lapack            | 87.311      | 2.296s
+Sonicv2 gnu + netlib-lapack + libmem)  | 88.074      | 2.276s
+Sonic gcc + mkl                        | 87.538      | 2.863s
+Sonic gcc + mkl amd fix                | 88.432      | 2.834s
+
+### Python MKL
+
+CentOS 7, glibc v2.17
+
+Operation | MKL Default | MKL With Flag 
+---|---|----
+Dot 20000 x 20000 32 | 7.46s | **6.02s**
+Dot 20000 x 20000 64 | 12.49s | 11.28s
+Eigen 4096 x 4096 | 48.22s | **23s** 
+Cholesky 4096 x 4096 | 0.3s | 0.28s 
+SVD 8192 x 4096 x 20000 | 1.66s | 1.44s 
+Eigen 2048 x 2048 | 6.29s | **4.01s** 
+SVD 2048 x 1024 | 0.49s | 0.37s 
+
+
+### Sonic disk benchmarks
+
+Computed with byte size=512, 1000 writes, serial.
+
+CentOS 7, glibc v2.17
+
+Disk | Write | Latency
+---|---|----
+/dev/sda (HOME) | 440 MB/s | 56ms
+/mnt/pfs        | 850 MB/s | 1.3ms
+/nasdata1       | 106MB/s  | 3.84s       | 
+
+
+![Sonic cache](sonic_cache.png "The amount of cache read in by the OS on sonic with different glibc versions"){width=40%}
+
+
 ## Compiling SpEC
 ### Versions of third-party libraries used (as of March 2023)
 
