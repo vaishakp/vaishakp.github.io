@@ -9,8 +9,8 @@
 4. Different math libraries (lapack, openBlas, aocl; incomplete study)
 5. Build everything manually (semi-automated package available) from source. **No spack**.
 6. Profiling (sampling and instrumentation) and benchmarking SpEC BBH runs
-7. Consistently turning on avx2, fma, pic, lto (!) optimizations at O3.
-8. Dynamically linked executables.
+7. Consistently turning on avx2, fma, pic, optimizations at O3.
+8. Dynamically linked executables and lto (!).
 9. glibc bugs.
 
 # Introduction
@@ -139,10 +139,6 @@ Disk | Write | Latency
 /dev/sda (HOME) | 440 MB/s | 56ms
 /mnt/pfs        | 850 MB/s | 1.3ms
 /nasdata1       | 106MB/s  | 3.84s       | 
-
-
-![Sonic cache](sonic_cache.png "The amount of cache read in by the OS on sonic with different glibc versions"){width=40%}
-
 
 ## Compiling SpEC
 ### Versions of third-party libraries used (as of March 2023)
