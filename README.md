@@ -441,8 +441,7 @@ Scaling results on SpEC are not very useful -- this is because SpEC can only use
 
 ### Global memory footprint
 
-
-![global_mem_bench](https://github.com/user-attachments/assets/4e06865e-5e28-402e-b359-abe6e60e8dea)
+![global_mem_bench-1](https://github.com/user-attachments/assets/7f5ee33c-0289-4f54-8dfa-50a286154f83)
 
 
 # Long simulations
