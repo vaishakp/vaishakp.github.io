@@ -142,7 +142,7 @@ The following flags were used to compile ALL the software/libraries:
 #### Do we need PIC/PIE, shared/static libraries?
 1. PIC/ PIE refers to position-independent code and executable respectively, allowing computer programs to run core irrespective of their location in memory.
 2. The flags `-fPIC` and `-fpic` are usually different, with the latter generating more machine-specific code (at the cost of portability) that is faster and smaller in size.
-3. In the olden days, memory was minimal and we didn't have virtual memory. It was advantageous to be able to execute a program that has fragnented code anywhere in the memory.
+3. In the olden days, memory was minimal and we didn't have virtual memory. It was advantageous to be able to execute a program that has fragmented code anywhere in the memory.
 4. If we wish to build an application with PIC/PIE enabled, then it could use either static or dynamic (shared) libraries (or both). However, they must all be compiled with PIC enabled.
 5.  Compiling and linking a static library with a shared library results in the code of the static library being copied into the dynamic library.
 6.  It is advantageous to compile an application like SpEC with shared libraries due to modularity in the dependencies. This would be useful, e.g. in benchmarking.
@@ -315,9 +315,14 @@ A typical SpEC evolution process has the following stats (after optimization i.e
 ```
 
 1. Frontend (fetch and decode) stalls refer to the frontend pipeline not feeding $\mu$Op instructions to the backend pipeline. This could be due to cache misses, failure to decode complex instructions (which is more probable in JIT compilers)
-2. Backend (execution) stalls refer to instructions not retiring on time. This could be due to memory-bound or CPU-bound stalls. The former can happen due to demand load/store instructions i.e. when, e.g. data to compute on is not found in memory and the processor has to look in slower memory. The latter can occur when there are complicated math operations (like square root, and divisions) that could take longer to complete.
+2. Backend (execution) stalls refer to instructions not retiring on time. This could be due to memory-bound or CPU-bound stalls.
+   1. The former can happen due to demand load/store instructions i.e. when, e.g. data to compute on is not found in memory and the processor has to look in slower memory. 
+   2. The latter can occur when there are complicated math operations (like square root, and divisions) that could take longer to complete.
 
+A bandwidth-limited stall can occur in a dependency chain. Although modern processors support out-of-order instructions and simultaneous reading from cache and memory, if instruction B depends on the outcome of A, then B gets stalled. Parallelization is not further possible. 
+A may cause further stalls if it involves longer latency operations, or due to insufficient memory bandwidth. A dependency chain can benefit from faster ALUs and/or RAM. If this is true, then SpEC can benefit from overdecomposition.
 
+Usually, memory-bound stalls may also show cache misses.
 
 ##### Evolution hotspots 
 Time spent by SpEC evolution in different libraries.
