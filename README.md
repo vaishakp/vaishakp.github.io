@@ -5,8 +5,6 @@
 
 1. Compile-time optimizations of SpEC
 2. Finding the latest and the best matching iter-compatible library versions
-3. Different compilers (GCC, clang, aocc; incomplete study)
-4. Different math libraries (lapack, openBlas, aocl; incomplete study)
 5. Build everything manually (semi-automated package available) from source. **No spack**.
 6. Profiling (sampling and instrumentation) and benchmarking SpEC BBH runs
 7. Consistently turning on avx2, fma, pic, optimizations at O3.
@@ -477,3 +475,5 @@ Please note that the first plot is still in the Junk radiation phase ($t\sim100M
 4. Profile guided optimization
 5. fine tuning (e.g. unrolling loops)
 6. Use AMD's AOCC and AOCL (evidence exists for better machine code and mem bandwidth)
+7. Different math libraries (lapack, openBlas, aocl; incomplete study)
+8. Different compilers (clang, aocc; incomplete study)
