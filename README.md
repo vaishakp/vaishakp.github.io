@@ -1,5 +1,15 @@
 # Compile-time optimizations of SpEC on HPCs
 
+
+# TL;DR
+
+1. Compile-time optimizations of SpEC
+2. Finding the latest and the best matching iter-compatible library versions
+3. Different compilers (GCC, clang, aocc; incomplete study)
+4. Different math libraries (lapack, openBlas, aocl; incomplete study)
+5. Profiling (sampling and instrumentation) and benchmarking SpEC BBH runs
+6. Consistent avx2, fma, pic, lto (!) optimizations at O3. Dynamically linked executables.
+   
 In this document, I describe the compile-time optimizations (experimented between Nov 2022 and March 2023) that led to significant performance improvements in Binary Black Hole simulations using SpEC. 
 This document is relevant for HPCs with x86-64 CPUs, especially for AMD CPUs. It also implements many generic CPU optimizations.
 
