@@ -394,3 +394,4 @@ Please note that the first plot is still in the Junk radiation phase ($t\sim100M
 3. Compile and use xpmem/knem
 4. Profile guided optimization
 5. fine tuning (e.g. unrolling loops)
+6. Use AMD's AOCC and AOCL (evidence exists for better machine code and mem bandwidth)
