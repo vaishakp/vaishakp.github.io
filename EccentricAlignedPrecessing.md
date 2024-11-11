@@ -40,7 +40,7 @@ This page was first created on Feb 20, 2024.
 
 # Simulation diagnostics
 
-![Simulation summary](summary_7Aug.pdf)
+[Simulation summary](summary_7Aug.pdf)
 
 # Database of simulations
 
