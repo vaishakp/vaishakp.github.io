@@ -31,12 +31,12 @@ This page was first created on Feb 20, 2024.
 
 # Sample waveform
 
-![One waveform](https://github.com/vaishakp/nrsimulations/blob/2dd1b41fa4e31fcdb2d1d380eb967f0b527c6fef/eccprec01.png)
+![One waveform](eccprec01.png)
 
 # Parameter space
 
-![qChiPrec](https://github.com/vaishakp/nrsimulations/blob/2dd1b41fa4e31fcdb2d1d380eb967f0b527c6fef/SpEC_sims.png)
-![len](https://github.com/vaishakp/nrsimulations/blob/2dd1b41fa4e31fcdb2d1d380eb967f0b527c6fef/SpEC_sims_lengths.png)
+![qChiPrec](SpEC_sims.png)
+![len](SpEC_sims_lengths.png)
 
 # Database of simulations
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
