@@ -41,7 +41,7 @@ A bunch of template libraries for building MPI and multiprocessing programs in p
 Tools to prepare data for visualization NR data in visit/paraview
 
 ## sxstools
-Interface for data loading from SXS simulations
+Interface for loading data from SXS simulations
 
 ## qlmtools
 Quasi local computations and Dynamical Horizons 
