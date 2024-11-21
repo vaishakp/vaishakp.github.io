@@ -18,7 +18,6 @@ Numerical Relativity simulation runs at ICTS-TIFR using SpEC
 ## [At ICTS-TIFR using SpECTRE](SpECTRE_sims_ICTS.md)
 Upcomping!
 
-
 # Packages and tools
 
 Please contact (vaishak.p@icts.res.in) for access.
@@ -56,3 +55,5 @@ Quasi local computations and Dynamical Horizons
 ## [benchmarks](https://gitlab.com/vaishakp/benchmarks)
 Benchmarks of HPCs using dgemm/python with various linear algebra routines like openblas, mkl, lapack, AMD blis/libflame.
 
+## [pkginstaller](https://gitlab.com/vaishakp/pkginstaller)
+An (almost) automated script to compile packages from source with optimizations
