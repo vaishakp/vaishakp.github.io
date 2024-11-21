@@ -3,21 +3,28 @@ Welcome to my resources page!
 
 
 # [SpEC Optimizations on HPCs](optimizations.md)
+How to setup SpEC with optimizations taylored to the native architecture
 
 # [NR simulations](EccentricAlignedPrecessing.md)
+The NR simulations repository 
 
 ## [At IUCAA using EinsteinToolkit](IUCAA_sims.md)
-## [At ICTS-TIFR using SpEC](EccentricAlignedPrecessing.md)
-## [At ICTS-TIFR using SpECTRE](SpECTRE_sims_ICTS.md)
 
+Numerical Relativity simulation runs at IUCAA using SpEC
+
+## [At ICTS-TIFR using SpEC](EccentricAlignedPrecessing.md)
+Numerical Relativity simulation runs at ICTS-TIFR using SpEC
+
+## [At ICTS-TIFR using SpECTRE](SpECTRE_sims_ICTS.md)
+Upcomping!
 
 
 # Packages and tools
 
-Please contact for access.
+Please contact (vaishak.p@icts.res.in) for access.
 
 
-## waveformtools (2016 - )
+## [waveformtools](https://gitlab.com/vaishakp/waveformtools) (2016 - )
 1. NR waveform data loading from different catalogs
 2. CoM correction
 3. BMS transformations
@@ -27,26 +34,25 @@ Please contact for access.
 7. Logger and misc tools
 
 
-## spectral
+## [spectral](https://github.com/vaishakp/spectral)
 Efficient, fast and accurate spectral transform library
 1. Chebyshev transforms
 2. Spin-weighted spherical harmonic computation, including to arbitrary precision
 3. Spectral interpolator
 
 
-## parallellib
+## [parallellib](https://github.com/vaishakp/parallellib)
 A bunch of template libraries for building MPI and multiprocessing programs in python
 
-## vistools
+## [vistools](https://github.com/vaishakp/vistools)
 Tools to prepare data for visualization NR data in visit/paraview
 
-## sxstools
+## [sxstools](https://github.com/vaishakp/sxstools)
 Interface for loading data from SXS simulations
 
-## qlmtools
+## [qlmtools](https://github.com/vaishakp/qlmtools)
 Quasi local computations and Dynamical Horizons 
 
-## benchmarks
+## [benchmarks](https://gitlab.com/vaishakp/benchmarks)
 Benchmarks of HPCs using dgemm/python with various linear algebra routines like openblas, mkl, lapack, AMD blis/libflame.
 
-contact: vaishak.p@icts.res.in
