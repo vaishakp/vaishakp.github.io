@@ -3,4 +3,4 @@ plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
 
 title: Vaishak\ Prasad 
-description: Resources.<img src="images/Flickering_cursor.gif"/>
+description: Resources.<img src="images/Flickering_cursor.gif" width="10"/>
