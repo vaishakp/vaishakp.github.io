@@ -8,11 +8,11 @@ How to setup SpEC with optimizations taylored to the native architecture
 # [NR simulations](https://github.com/vaishakp/nrsimulations/tree/main)
 The NR simulations repository 
 
-## [At IUCAA using EinsteinToolkit](https://github.com/vaishakp/nrsimulations/blob/1b09c8e3580ef111330a75800bab9a487fa1dad4/IUCAA_sims.md)
+## [At IUCAA using EinsteinToolkit](https://vaishakp.github.io/nrsimulations/IUCAA_sims.html)
 
 Numerical Relativity simulation runs at IUCAA using SpEC
 
-## [At ICTS-TIFR using SpEC](nrsimulations/EccentricAlignedPrecessing.md)
+## [At ICTS-TIFR using SpEC](https://vaishakp.github.io/nrsimulations/EccentricAlignedPrecessing.html)
 Numerical Relativity simulation runs at ICTS-TIFR using SpEC
 
 ## [At ICTS-TIFR using SpECTRE](SpECTRE_sims_ICTS.md)
