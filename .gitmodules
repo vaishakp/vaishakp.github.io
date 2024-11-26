@@ -1,3 +1,3 @@
 [submodule "nrsimulations"]
 	path = nrsimulations
-	url = git@github.com:vaishakp/nrsimulations.git
+	url = https://github.com/vaishakp/nrsimulations.git
