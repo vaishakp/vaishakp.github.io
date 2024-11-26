@@ -12,7 +12,7 @@ The NR simulations repository
 
 Numerical Relativity simulation runs at IUCAA using SpEC
 
-## [At ICTS-TIFR using SpEC](https://github.com/vaishakp/nrsimulations/blob/299895b7e6860a9a93f2cf0f89978efddaf6c4c1/EccentricAlignedPrecessing.md)(
+## [At ICTS-TIFR using SpEC](https://github.com/vaishakp/nrsimulations/blob/299895b7e6860a9a93f2cf0f89978efddaf6c4c1/EccentricAlignedPrecessing.md)
 Numerical Relativity simulation runs at ICTS-TIFR using SpEC
 
 ## [At ICTS-TIFR using SpECTRE](SpECTRE_sims_ICTS.md)
