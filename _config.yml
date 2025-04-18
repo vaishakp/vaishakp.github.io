@@ -1,5 +1,6 @@
 #remote_theme: pages-themes/hacker@v0.2.0
-remote_theme: pages-themes/minimal
+#remote_theme: pages-themes/minimal
+remote_theme: andrewbanchich/massively-jekyll-theme
 plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
 
